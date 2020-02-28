@@ -1,0 +1,395 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		561A350824040788002BC5B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A350724040788002BC5B0 /* AppDelegate.swift */; };
+		561A350A24040788002BC5B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A350924040788002BC5B0 /* SceneDelegate.swift */; };
+		561A351124040789002BC5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 561A351024040789002BC5B0 /* Assets.xcassets */; };
+		561A351424040789002BC5B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 561A351224040789002BC5B0 /* LaunchScreen.storyboard */; };
+		561A351C240407AB002BC5B0 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A351B240407AB002BC5B0 /* Game.swift */; };
+		561A351E240407CF002BC5B0 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A351D240407CF002BC5B0 /* Player.swift */; };
+		561A352224040854002BC5B0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352124040854002BC5B0 /* Settings.swift */; };
+		561A352424040AD7002BC5B0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352324040AD7002BC5B0 /* HomeViewController.swift */; };
+		561A352624040AE7002BC5B0 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352524040AE7002BC5B0 /* GameViewController.swift */; };
+		561A352C24040E0D002BC5B0 /* PlayerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352B24040E0D002BC5B0 /* PlayerInfoView.swift */; };
+		561A352E240428FD002BC5B0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352D240428FD002BC5B0 /* SettingsViewController.swift */; };
+		561A35302404C43F002BC5B0 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352F2404C43F002BC5B0 /* ResultViewController.swift */; };
+		561A35352404EA79002BC5B0 /* UIKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A35342404EA79002BC5B0 /* UIKitExtension.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		561A350424040788002BC5B0 /* MahjongCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MahjongCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		561A350724040788002BC5B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		561A350924040788002BC5B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		561A351024040789002BC5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		561A351324040789002BC5B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		561A351524040789002BC5B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		561A351B240407AB002BC5B0 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		561A351D240407CF002BC5B0 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		561A352124040854002BC5B0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		561A352324040AD7002BC5B0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		561A352524040AE7002BC5B0 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		561A352B24040E0D002BC5B0 /* PlayerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInfoView.swift; sourceTree = "<group>"; };
+		561A352D240428FD002BC5B0 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		561A352F2404C43F002BC5B0 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		561A35342404EA79002BC5B0 /* UIKitExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtension.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		561A350124040788002BC5B0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		561A34FB24040788002BC5B0 = {
+			isa = PBXGroup;
+			children = (
+				561A350624040788002BC5B0 /* MahjongCounter */,
+				561A350524040788002BC5B0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		561A350524040788002BC5B0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				561A350424040788002BC5B0 /* MahjongCounter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		561A350624040788002BC5B0 /* MahjongCounter */ = {
+			isa = PBXGroup;
+			children = (
+				561A350724040788002BC5B0 /* AppDelegate.swift */,
+				561A350924040788002BC5B0 /* SceneDelegate.swift */,
+				561A351024040789002BC5B0 /* Assets.xcassets */,
+				561A351224040789002BC5B0 /* LaunchScreen.storyboard */,
+				561A351524040789002BC5B0 /* Info.plist */,
+				561A35332404C469002BC5B0 /* ViewController */,
+				561A35322404C45A002BC5B0 /* View */,
+				561A35312404C452002BC5B0 /* Model */,
+				561A35362404EA81002BC5B0 /* Extension */,
+			);
+			path = MahjongCounter;
+			sourceTree = "<group>";
+		};
+		561A35312404C452002BC5B0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				561A351B240407AB002BC5B0 /* Game.swift */,
+				561A351D240407CF002BC5B0 /* Player.swift */,
+				561A352124040854002BC5B0 /* Settings.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		561A35322404C45A002BC5B0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				561A352B24040E0D002BC5B0 /* PlayerInfoView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		561A35332404C469002BC5B0 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				561A352324040AD7002BC5B0 /* HomeViewController.swift */,
+				561A352524040AE7002BC5B0 /* GameViewController.swift */,
+				561A352D240428FD002BC5B0 /* SettingsViewController.swift */,
+				561A352F2404C43F002BC5B0 /* ResultViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		561A35362404EA81002BC5B0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				561A35342404EA79002BC5B0 /* UIKitExtension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		561A350324040788002BC5B0 /* MahjongCounter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 561A351824040789002BC5B0 /* Build configuration list for PBXNativeTarget "MahjongCounter" */;
+			buildPhases = (
+				561A350024040788002BC5B0 /* Sources */,
+				561A350124040788002BC5B0 /* Frameworks */,
+				561A350224040788002BC5B0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MahjongCounter;
+			productName = MahjongCounter;
+			productReference = 561A350424040788002BC5B0 /* MahjongCounter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		561A34FC24040788002BC5B0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = yuhan;
+				TargetAttributes = {
+					561A350324040788002BC5B0 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 561A34FF24040788002BC5B0 /* Build configuration list for PBXProject "MahjongCounter" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 561A34FB24040788002BC5B0;
+			productRefGroup = 561A350524040788002BC5B0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				561A350324040788002BC5B0 /* MahjongCounter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		561A350224040788002BC5B0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				561A351424040789002BC5B0 /* LaunchScreen.storyboard in Resources */,
+				561A351124040789002BC5B0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		561A350024040788002BC5B0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				561A350824040788002BC5B0 /* AppDelegate.swift in Sources */,
+				561A350A24040788002BC5B0 /* SceneDelegate.swift in Sources */,
+				561A351E240407CF002BC5B0 /* Player.swift in Sources */,
+				561A352E240428FD002BC5B0 /* SettingsViewController.swift in Sources */,
+				561A352C24040E0D002BC5B0 /* PlayerInfoView.swift in Sources */,
+				561A352624040AE7002BC5B0 /* GameViewController.swift in Sources */,
+				561A35352404EA79002BC5B0 /* UIKitExtension.swift in Sources */,
+				561A352424040AD7002BC5B0 /* HomeViewController.swift in Sources */,
+				561A352224040854002BC5B0 /* Settings.swift in Sources */,
+				561A351C240407AB002BC5B0 /* Game.swift in Sources */,
+				561A35302404C43F002BC5B0 /* ResultViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		561A351224040789002BC5B0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				561A351324040789002BC5B0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		561A351624040789002BC5B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		561A351724040789002BC5B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		561A351924040789002BC5B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F6QSEMKSK2;
+				INFOPLIST_FILE = MahjongCounter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yuhan.MahjongCounter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		561A351A24040789002BC5B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F6QSEMKSK2;
+				INFOPLIST_FILE = MahjongCounter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yuhan.MahjongCounter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		561A34FF24040788002BC5B0 /* Build configuration list for PBXProject "MahjongCounter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				561A351624040789002BC5B0 /* Debug */,
+				561A351724040789002BC5B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		561A351824040789002BC5B0 /* Build configuration list for PBXNativeTarget "MahjongCounter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				561A351924040789002BC5B0 /* Debug */,
+				561A351A24040789002BC5B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 561A34FC24040788002BC5B0 /* Project object */;
+}
