@@ -12,6 +12,7 @@ class Player: Codable {
     
     var name: String = ""
     var point: Int = 0
+    var times: Int = 0 // win times counter
     
     init(name: String) {
         self.name = name;

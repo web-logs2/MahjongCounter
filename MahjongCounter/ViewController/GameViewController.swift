@@ -58,25 +58,25 @@ class GameViewController: UIViewController {
         
         let settings = Settings.shared
 
-        player1InfoView = PlayerInfoView(name: player1.name, point: player1.point)
+        player1InfoView = PlayerInfoView(name: player1.name, times: player1.times, point: player1.point)
         player1InfoView.backgroundColor = settings.player1Color
         player1InfoView.addTapGestureRecognizer(target: self, action: #selector(player1InfoViewTapped))
         player1InfoView.delegate = self
         view.addSubview(player1InfoView)
         
-        player2InfoView = PlayerInfoView(name: player2.name, point: player2.point)
+        player2InfoView = PlayerInfoView(name: player2.name, times: player2.times, point: player2.point)
         player2InfoView.backgroundColor = settings.player2Color
         player2InfoView.addTapGestureRecognizer(target: self, action: #selector(player2InfoViewTapped))
         player2InfoView.delegate = self
         view.addSubview(player2InfoView)
         
-        player3InfoView = PlayerInfoView(name: player3.name, point: player3.point)
+        player3InfoView = PlayerInfoView(name: player3.name, times: player3.times, point: player3.point)
         player3InfoView.backgroundColor = settings.player3Color
         player3InfoView.addTapGestureRecognizer(target: self, action: #selector(player3InfoViewTapped))
         player3InfoView.delegate = self
         view.addSubview(player3InfoView)
         
-        player4InfoView = PlayerInfoView(name: player4.name, point: player4.point)
+        player4InfoView = PlayerInfoView(name: player4.name, times: player4.times, point: player4.point)
         player4InfoView.backgroundColor = settings.player4Color
         player4InfoView.addTapGestureRecognizer(target: self, action: #selector(player4InfoViewTapped))
         player4InfoView.delegate = self
@@ -200,7 +200,37 @@ class GameViewController: UIViewController {
         return nil
     }
     
-    func updatePointButtonSelection(selectedPlayerInfoView: PlayerInfoView) {
+    func updatePlayerData() {
+        guard let winner = currentRoundWinner else {
+            return
+        }
+        // update point for player
+        for (player, point) in currentRoundLoserPointInfo {
+            player.point -= point
+            winner.point += point
+        }
+        // update times for player
+        if currentRoundLoserPointInfo.count == 3 {
+            winner.times += 1
+        }
+        // save game data
+        Game.saveGame(game)
+    }
+    
+    func updatePlayerInfoViewsData() {
+        // update UI for times
+        player1InfoView.updateTimes(game.player1.times)
+        player2InfoView.updateTimes(game.player2.times)
+        player3InfoView.updateTimes(game.player3.times)
+        player4InfoView.updateTimes(game.player4.times)
+        // update UI for point
+        player1InfoView.updatePoint(game.player1.point)
+        player2InfoView.updatePoint(game.player2.point)
+        player3InfoView.updatePoint(game.player3.point)
+        player4InfoView.updatePoint(game.player4.point)
+    }
+    
+    func updatePlayerInfoViewsButtonSelection(_ selectedPlayerInfoView: PlayerInfoView) {
         if selectedPlayerInfoView != player1InfoView {
             player1InfoView.clearPointButtonSelection()
         }
@@ -215,26 +245,11 @@ class GameViewController: UIViewController {
         } 
     }
     
-    func updatePlayerInfoViewsStatus() {
+    func updatePlayerInfoViewsUIStatus() {
         player1InfoView.resetUI()
         player2InfoView.resetUI()
         player3InfoView.resetUI()
         player4InfoView.resetUI()
-    }
-    
-    func UpdatePlayerPoints() {
-        guard let winner = currentRoundWinner else {
-            return
-        }
-        for (player, point) in currentRoundLoserPointInfo {
-            player.point -= point
-            winner.point += point
-        }
-        Game.saveGame(game)
-        player1InfoView.updatePoint(game.player1.point)
-        player2InfoView.updatePoint(game.player2.point)
-        player3InfoView.updatePoint(game.player3.point)
-        player4InfoView.updatePoint(game.player4.point)
     }
     
     func checkPointButtonSelection(continueAction: @escaping () -> Void) {
@@ -255,17 +270,16 @@ extension GameViewController: PlayerInfoViewDelegate {
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, doneButtonDidClick button: UIButton) {
         checkPointButtonSelection {
-            self.UpdatePlayerPoints()
-            self.currentRoundLoserPointInfo = [:]
-            self.updatePointButtonSelection(selectedPlayerInfoView: playerInfoView)
-            self.updatePlayerInfoViewsStatus()
+            self.updatePlayerData()
+            self.updatePlayerInfoViewsData()
+            self.updatePlayerInfoViewsButtonSelection(playerInfoView)
+            self.updatePlayerInfoViewsUIStatus()
         }
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, cancelButtonDidClick button: UIButton) {
-        currentRoundLoserPointInfo = [:]
-        updatePointButtonSelection(selectedPlayerInfoView: playerInfoView)
-        updatePlayerInfoViewsStatus()
+        updatePlayerInfoViewsButtonSelection(playerInfoView)
+        updatePlayerInfoViewsUIStatus()
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, pointButtonDidClick button: UIButton) {

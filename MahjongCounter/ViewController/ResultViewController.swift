@@ -39,31 +39,36 @@ class ResultViewController: UIViewController {
         
         view.backgroundColor = UIColor.white
         
+        let player1 = game.player1
+        let player2 = game.player2
+        let player3 = game.player3
+        let player4 = game.player4
+        
         nameLabel1 = UILabel()
         nameLabel1.font = UIFont.systemFont(ofSize: 24)
         nameLabel1.textColor = UIColor.black
-        nameLabel1.text = "\(game.player1.name): "
+        nameLabel1.text = "\(player1.name)(\(player1.times)): "
         nameLabel1.sizeToFit()
         view.addSubview(nameLabel1)
         
         nameLabel2 = UILabel()
         nameLabel2.font = UIFont.systemFont(ofSize: 24)
         nameLabel2.textColor = UIColor.black
-        nameLabel2.text = "\(game.player2.name): "
+        nameLabel2.text = "\(player2.name)(\(player2.times)): "
         nameLabel2.sizeToFit()
         view.addSubview(nameLabel2)
         
         nameLabel3 = UILabel()
         nameLabel3.font = UIFont.systemFont(ofSize: 24)
         nameLabel3.textColor = UIColor.black
-        nameLabel3.text = "\(game.player3.name): "
+        nameLabel3.text = "\(player3.name)(\(player3.times)): "
         nameLabel3.sizeToFit()
         view.addSubview(nameLabel3)
         
         nameLabel4 = UILabel()
         nameLabel4.font = UIFont.systemFont(ofSize: 24)
         nameLabel4.textColor = UIColor.black
-        nameLabel4.text = "\(game.player4.name): "
+        nameLabel4.text = "\(player4.name)(\(player4.times)): "
         nameLabel4.sizeToFit()
         view.addSubview(nameLabel4)
         
@@ -71,29 +76,29 @@ class ResultViewController: UIViewController {
         
         moneyLabel1 = UILabel()
         moneyLabel1.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel1.textColor = game.player1.point.displayColor
-        moneyLabel1.text = (game.player1.point * settings.moneyPerPoint).displayString
+        moneyLabel1.textColor = player1.point.pointColor
+        moneyLabel1.text = (player1.point * settings.moneyPerPoint).pointString
         moneyLabel1.sizeToFit()
         view.addSubview(moneyLabel1)
         
         moneyLabel2 = UILabel()
         moneyLabel2.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel2.textColor = game.player2.point.displayColor
-        moneyLabel2.text = (game.player2.point * settings.moneyPerPoint).displayString
+        moneyLabel2.textColor = player2.point.pointColor
+        moneyLabel2.text = (player2.point * settings.moneyPerPoint).pointString
         moneyLabel2.sizeToFit()
         view.addSubview(moneyLabel2)
         
         moneyLabel3 = UILabel()
         moneyLabel3.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel3.textColor = game.player3.point.displayColor
-        moneyLabel3.text = (game.player3.point * settings.moneyPerPoint).displayString
+        moneyLabel3.textColor = player3.point.pointColor
+        moneyLabel3.text = (player3.point * settings.moneyPerPoint).pointString
         moneyLabel3.sizeToFit()
         view.addSubview(moneyLabel3)
         
         moneyLabel4 = UILabel()
         moneyLabel4.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel4.textColor = game.player4.point.displayColor
-        moneyLabel4.text = (game.player4.point * settings.moneyPerPoint).displayString
+        moneyLabel4.textColor = player4.point.pointColor
+        moneyLabel4.text = (player4.point * settings.moneyPerPoint).pointString
         moneyLabel4.sizeToFit()
         view.addSubview(moneyLabel4)
         

@@ -18,6 +18,7 @@ protocol PlayerInfoViewDelegate: AnyObject {
 class PlayerInfoView: UIView {
     
     private var nameLabel: UILabel!
+    private var timesLabel: UILabel!
     private var pointLabel: UILabel!
     
     private var doneButton: UIButton!
@@ -30,18 +31,12 @@ class PlayerInfoView: UIView {
     private var pointButton5: UIButton!
     private var pointButton6: UIButton!
     
-    private var name: String = ""
-    private var point: Int = 0
-    
     private(set) var locked: Bool = false
     
     weak var delegate: PlayerInfoViewDelegate?
 
-    init(name: String, point: Int) {
+    init(name: String, times: Int, point: Int) {
         super.init(frame: .zero)
-        
-        self.name = name
-        self.point = point
         
         nameLabel = UILabel()
         nameLabel.font = UIFont.systemFont(ofSize: 30)
@@ -50,10 +45,17 @@ class PlayerInfoView: UIView {
         nameLabel.sizeToFit()
         addSubview(nameLabel)
         
+        timesLabel = UILabel()
+        timesLabel.font = UIFont.systemFont(ofSize: 20)
+        timesLabel.textColor = UIColor.black
+        timesLabel.text = times.timesString;
+        timesLabel.sizeToFit()
+        addSubview(timesLabel)
+        
         pointLabel = UILabel()
         pointLabel.font = UIFont.systemFont(ofSize: 50)
-        pointLabel.textColor = point.displayColor
-        pointLabel.text = point.displayString;
+        pointLabel.textColor = point.pointColor
+        pointLabel.text = point.pointString;
         pointLabel.sizeToFit()
         addSubview(pointLabel)
         
@@ -179,6 +181,9 @@ class PlayerInfoView: UIView {
         nameLabel.frame.origin.x = (frame.width - nameLabel.frame.width) / 2
         nameLabel.frame.origin.y = 20
         
+        timesLabel.frame.origin.x = (frame.width - timesLabel.frame.width) / 2
+        timesLabel.frame.origin.y = nameLabel.frame.maxY + 10
+        
         pointLabel.frame.origin.x = (frame.width - pointLabel.frame.width) / 2
         pointLabel.frame.origin.y = (frame.height + nameLabel.frame.maxY - pointLabel.frame.height) / 2
         
@@ -215,6 +220,7 @@ class PlayerInfoView: UIView {
     
     func setWinUI() {
         locked = true
+        timesLabel.isHidden = true
         pointLabel.isHidden = true
         doneButton.isHidden = false
         cancelButton.isHidden = false
@@ -228,6 +234,7 @@ class PlayerInfoView: UIView {
     
     func setLoseUI() {
         locked = true
+        timesLabel.isHidden = true
         pointLabel.isHidden = true
         doneButton.isHidden = true
         cancelButton.isHidden = true
@@ -241,6 +248,7 @@ class PlayerInfoView: UIView {
     
     func resetUI() {
         locked = false
+        timesLabel.isHidden = false
         pointLabel.isHidden = false
         doneButton.isHidden = true
         cancelButton.isHidden = true
@@ -256,10 +264,15 @@ class PlayerInfoView: UIView {
         updateSelection(withSelectedButton: nil)
     }
     
+    func updateTimes(_ times: Int) {
+        timesLabel.text = times.timesString
+        timesLabel.sizeToFit()
+        setNeedsLayout()
+    }
+    
     func updatePoint(_ point: Int) {
-        self.point = point
-        pointLabel.textColor = point.displayColor
-        pointLabel.text = point.displayString;
+        pointLabel.textColor = point.pointColor
+        pointLabel.text = point.pointString;
         pointLabel.sizeToFit()
         setNeedsLayout()
     }
@@ -316,7 +329,7 @@ class PlayerInfoView: UIView {
 
 extension Int {
     
-    var displayColor: UIColor {
+    var pointColor: UIColor {
         if self < 0 {
             return .red
         }
@@ -326,10 +339,14 @@ extension Int {
         return .black
     }
     
-    var displayString: String {
+    var pointString: String {
         if self > 0 {
             return "+\(self)"
         }
         return String(self)
+    }
+    
+    var timesString: String {
+        return "胡牌次数: \(self)"
     }
 }

@@ -14,8 +14,8 @@ class Settings {
     
     var player1Name: String = "爸"
     var player2Name: String = "妈"
-    var player3Name: String = "于涵"
-    var player4Name: String = "宜琳"
+    var player3Name: String = "涵"
+    var player4Name: String = "琳"
     
     var player1Color: UIColor = UIColor.random()
     var player2Color: UIColor = UIColor.random()
