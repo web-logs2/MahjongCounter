@@ -264,8 +264,12 @@ class PlayerInfoView: UIView {
         updateSelection(withSelectedButton: nil)
     }
     
-    func updateTimes(_ times: Int) {
-        timesLabel.text = times.timesString
+    func updateTimes(_ times: Int, _ continuous: Int) {
+        if continuous > 0 {
+            timesLabel.text = times.timesString + " " + continuous.continuousString
+        } else {
+            timesLabel.text = times.timesString
+        }
         timesLabel.sizeToFit()
         setNeedsLayout()
     }
@@ -347,6 +351,10 @@ extension Int {
     }
     
     var timesString: String {
-        return "胡牌次数: \(self)"
+        return "胡牌: \(self)"
+    }
+    
+    var continuousString: String {
+        return "连胡: \(self)"
     }
 }

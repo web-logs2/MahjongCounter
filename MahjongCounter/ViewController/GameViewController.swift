@@ -209,9 +209,13 @@ class GameViewController: UIViewController {
             player.point -= point
             winner.point += point
         }
-        // update times for player
+        // update times and continuous for player
         if currentRoundLoserPointInfo.count == 3 {
             winner.times += 1
+            winner.continuous += 1
+            for player in currentRoundLoserPointInfo.keys {
+                player.continuous = 0
+            }
         }
         // save game data
         Game.saveGame(game)
@@ -219,10 +223,10 @@ class GameViewController: UIViewController {
     
     func updatePlayerInfoViewsData() {
         // update UI for times
-        player1InfoView.updateTimes(game.player1.times)
-        player2InfoView.updateTimes(game.player2.times)
-        player3InfoView.updateTimes(game.player3.times)
-        player4InfoView.updateTimes(game.player4.times)
+        player1InfoView.updateTimes(game.player1.times, game.player1.continuous)
+        player2InfoView.updateTimes(game.player2.times, game.player2.continuous)
+        player3InfoView.updateTimes(game.player3.times, game.player3.continuous)
+        player4InfoView.updateTimes(game.player4.times, game.player4.continuous)
         // update UI for point
         player1InfoView.updatePoint(game.player1.point)
         player2InfoView.updatePoint(game.player2.point)

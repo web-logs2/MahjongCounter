@@ -12,12 +12,26 @@ class Player: Codable {
     
     var name: String = ""
     var point: Int = 0
-    var times: Int = 0 // win times counter
+    
+    /// win times counter
+    var times: Int = 0 
+    
+    /// continuous win times counter
+    var continuous: Int = 0 {
+        didSet {
+            if continuous > maxContinuous {
+                maxContinuous = continuous
+            }
+        }
+    }
+    
+    /// max continuous win times
+    private(set) var maxContinuous: Int = 0 
     
     init(name: String) {
         self.name = name;
     }
-}
+} 
 
 extension Player: Hashable {
     

@@ -18,6 +18,8 @@ class ResultViewController: UIViewController {
     private var moneyLabel2: UILabel!
     private var moneyLabel3: UILabel!
     private var moneyLabel4: UILabel!
+    private var timesLabel: UILabel!
+    private var continuousLabel: UILabel!
     private var actionButton: UIButton!
     private var endButton: UIButton!
     
@@ -102,6 +104,20 @@ class ResultViewController: UIViewController {
         moneyLabel4.sizeToFit()
         view.addSubview(moneyLabel4)
         
+        timesLabel = UILabel()
+        timesLabel.font = UIFont.systemFont(ofSize: 20)
+        timesLabel.textColor = UIColor.black
+        timesLabel.text = generateTimesString()
+        timesLabel.sizeToFit()
+        view.addSubview(timesLabel)
+        
+        continuousLabel = UILabel()
+        continuousLabel.font = UIFont.systemFont(ofSize: 20)
+        continuousLabel.textColor = UIColor.black
+        continuousLabel.text = generateContinuousString()
+        continuousLabel.sizeToFit()
+        view.addSubview(continuousLabel)
+        
         actionButton = UIButton()
         actionButton.layer.cornerRadius = 8
         actionButton.layer.masksToBounds = true
@@ -126,25 +142,28 @@ class ResultViewController: UIViewController {
     }
     
     override func viewSafeAreaInsetsDidChange() {
-        let labelSpace = CGFloat(20)
-        let connectSpace = CGFloat(80) // space between label and button
+        let labelSpace1 = CGFloat(20)
+        let connectSpace1 = CGFloat(40)
+        let labelSpace2 = CGFloat(10)
+        let connectSpace2 = CGFloat(80)
         let buttonSpace = CGFloat(20)
-        let labelsHeight = nameLabel1.frame.height * 4 + labelSpace * 3
+        let labelsHeight1 = nameLabel1.frame.height * 4 + labelSpace1 * 3
+        let labelsHeight2 = timesLabel.frame.height * 2 + labelSpace1
         let buttonsHeight = actionButton.frame.height + buttonSpace + endButton.frame.height
-        let height = labelsHeight + connectSpace + buttonsHeight
+        let height = labelsHeight1 + connectSpace1 + labelsHeight2 + connectSpace2 + buttonsHeight
         let centerX = (view.frame.width + view.safeAreaInsets.left - view.safeAreaInsets.right) / 2
         
         nameLabel1.frame.origin.x = centerX - nameLabel1.frame.width
         nameLabel1.frame.origin.y = (view.frame.height - height) / 2
         
         nameLabel2.frame.origin.x = centerX - nameLabel2.frame.width
-        nameLabel2.frame.origin.y = nameLabel1.frame.maxY + labelSpace
+        nameLabel2.frame.origin.y = nameLabel1.frame.maxY + labelSpace1
         
         nameLabel3.frame.origin.x = centerX - nameLabel3.frame.width
-        nameLabel3.frame.origin.y = nameLabel2.frame.maxY + labelSpace
+        nameLabel3.frame.origin.y = nameLabel2.frame.maxY + labelSpace1
         
         nameLabel4.frame.origin.x = centerX - nameLabel4.frame.width
-        nameLabel4.frame.origin.y = nameLabel3.frame.maxY + labelSpace
+        nameLabel4.frame.origin.y = nameLabel3.frame.maxY + labelSpace1
         
         moneyLabel1.frame.origin.x = nameLabel1.frame.maxX
         moneyLabel1.frame.origin.y = nameLabel1.frame.midY - moneyLabel1.frame.height / 2
@@ -158,11 +177,61 @@ class ResultViewController: UIViewController {
         moneyLabel4.frame.origin.x = nameLabel4.frame.maxX
         moneyLabel4.frame.origin.y = nameLabel4.frame.midY - moneyLabel4.frame.height / 2
         
+        timesLabel.frame.origin.x = centerX - timesLabel.frame.width / 2
+        timesLabel.frame.origin.y = nameLabel4.frame.maxY + connectSpace1
+        
+        continuousLabel.frame.origin.x = centerX - continuousLabel.frame.width / 2
+        continuousLabel.frame.origin.y = timesLabel.frame.maxY + labelSpace2
+        
         actionButton.frame.origin.x = centerX - actionButton.frame.width / 2
-        actionButton.frame.origin.y = nameLabel4.frame.maxY + connectSpace
+        actionButton.frame.origin.y = continuousLabel.frame.maxY + connectSpace2
         
         endButton.frame.origin.x = centerX - endButton.frame.width / 2
         endButton.frame.origin.y = actionButton.frame.maxY + buttonSpace
+    }
+    
+    func generateTimesString() -> String {
+        var maxTimes: Int = 0
+        var maxPlayers: [Player] = []
+        let players = [game.player1, game.player2, game.player3, game.player4]
+        for player in players {
+            if player.times > maxTimes {
+                maxTimes = player.times
+                maxPlayers = [player]
+            } else if player.times == maxTimes {
+                maxPlayers.append(player)
+            }
+        }
+        var string = "胡牌最多 \(maxTimes)次: "
+        for (index, player) in maxPlayers.enumerated() {
+            if index > 0 {
+                string += "/"
+            }
+            string += player.name
+        }
+        return string
+    }
+    
+    func generateContinuousString() -> String {
+        var maxContinuous: Int = 0
+        var maxPlayers: [Player] = []
+        let players = [game.player1, game.player2, game.player3, game.player4]
+        for player in players {
+            if player.maxContinuous > maxContinuous {
+                maxContinuous = player.maxContinuous
+                maxPlayers = [player]
+            } else if player.maxContinuous == maxContinuous {
+                maxPlayers.append(player)
+            }
+        }
+        var string = "连胡最多 \(maxContinuous)次: "
+        for (index, player) in maxPlayers.enumerated() {
+            if index > 0 {
+                string += "/"
+            }
+            string += player.name
+        }
+        return string
     }
     
     func generateResultImage() -> UIImage? {
@@ -175,7 +244,7 @@ class ResultViewController: UIViewController {
         let x = nameLabel1.frame.maxX - 100
         let y = nameLabel1.frame.minY - 10
         let w = CGFloat(220)
-        let h = nameLabel4.frame.maxY - nameLabel1.frame.minY + 20
+        let h = continuousLabel.frame.maxY - nameLabel1.frame.minY + 20
         let rect = CGRect(x: x, y: y, width: w, height: h)
         return image?.cropping(to: rect)
     }
