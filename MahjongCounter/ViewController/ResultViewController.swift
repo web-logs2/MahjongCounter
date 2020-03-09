@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ResultViewController: UIViewController {
+class ResultViewController: BaseViewController {
     
     private var nameLabel1: UILabel!
     private var nameLabel2: UILabel!
@@ -18,14 +18,11 @@ class ResultViewController: UIViewController {
     private var moneyLabel2: UILabel!
     private var moneyLabel3: UILabel!
     private var moneyLabel4: UILabel!
-    private var timesLabel: UILabel!
-    private var continuousLabel: UILabel!
-    private var actionButton: UIButton!
-    private var endButton: UIButton!
+    private var maxWinTimesLabel: UILabel!
+    private var maxContinuousWinTimesLabel: UILabel!
+    private var maxFireTimesLabel: UILabel!
     
     private var game: Game!
-    
-    var didFinishHandler: (() -> Void)?
     
     init(game: Game) {
         super.init(nibName: nil, bundle: nil)
@@ -39,7 +36,9 @@ class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.white
+        navigationItem.title = "结果"
+        navigationItem.leftBarButtonItem = UIBarButtonItem.action(target: self, action: #selector(actionButtonClicked))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(doneButtonClicked))
         
         let player1 = game.player1
         let player2 = game.player2
@@ -49,28 +48,28 @@ class ResultViewController: UIViewController {
         nameLabel1 = UILabel()
         nameLabel1.font = UIFont.systemFont(ofSize: 24)
         nameLabel1.textColor = UIColor.black
-        nameLabel1.text = "\(player1.name)(\(player1.times)): "
+        nameLabel1.text = "\(player1.name)(\(player1.winTimes)): "
         nameLabel1.sizeToFit()
         view.addSubview(nameLabel1)
         
         nameLabel2 = UILabel()
         nameLabel2.font = UIFont.systemFont(ofSize: 24)
         nameLabel2.textColor = UIColor.black
-        nameLabel2.text = "\(player2.name)(\(player2.times)): "
+        nameLabel2.text = "\(player2.name)(\(player2.winTimes)): "
         nameLabel2.sizeToFit()
         view.addSubview(nameLabel2)
         
         nameLabel3 = UILabel()
         nameLabel3.font = UIFont.systemFont(ofSize: 24)
         nameLabel3.textColor = UIColor.black
-        nameLabel3.text = "\(player3.name)(\(player3.times)): "
+        nameLabel3.text = "\(player3.name)(\(player3.winTimes)): "
         nameLabel3.sizeToFit()
         view.addSubview(nameLabel3)
         
         nameLabel4 = UILabel()
         nameLabel4.font = UIFont.systemFont(ofSize: 24)
         nameLabel4.textColor = UIColor.black
-        nameLabel4.text = "\(player4.name)(\(player4.times)): "
+        nameLabel4.text = "\(player4.name)(\(player4.winTimes)): "
         nameLabel4.sizeToFit()
         view.addSubview(nameLabel4)
         
@@ -104,53 +103,35 @@ class ResultViewController: UIViewController {
         moneyLabel4.sizeToFit()
         view.addSubview(moneyLabel4)
         
-        timesLabel = UILabel()
-        timesLabel.font = UIFont.systemFont(ofSize: 20)
-        timesLabel.textColor = UIColor.black
-        timesLabel.text = generateTimesString()
-        timesLabel.sizeToFit()
-        view.addSubview(timesLabel)
+        maxWinTimesLabel = UILabel()
+        maxWinTimesLabel.font = UIFont.systemFont(ofSize: 20)
+        maxWinTimesLabel.textColor = UIColor.black
+        maxWinTimesLabel.text = generateMaxWinTimesString()
+        maxWinTimesLabel.sizeToFit()
+        view.addSubview(maxWinTimesLabel)
         
-        continuousLabel = UILabel()
-        continuousLabel.font = UIFont.systemFont(ofSize: 20)
-        continuousLabel.textColor = UIColor.black
-        continuousLabel.text = generateContinuousString()
-        continuousLabel.sizeToFit()
-        view.addSubview(continuousLabel)
+        maxContinuousWinTimesLabel = UILabel()
+        maxContinuousWinTimesLabel.font = UIFont.systemFont(ofSize: 20)
+        maxContinuousWinTimesLabel.textColor = UIColor.black
+        maxContinuousWinTimesLabel.text = generateMaxContinuousWinTimesString()
+        maxContinuousWinTimesLabel.sizeToFit()
+        view.addSubview(maxContinuousWinTimesLabel)
         
-        actionButton = UIButton()
-        actionButton.layer.cornerRadius = 8
-        actionButton.layer.masksToBounds = true
-        actionButton.frame.size = CGSize(width: 300, height: 50)
-        actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        actionButton.setBackgroundImage(UIImage(color: .orange), for: .normal)
-        actionButton.setTitleColor(.white, for: .normal)
-        actionButton.setTitle("分享", for: .normal)
-        actionButton.addTarget(self, action: #selector(actionButtonClicked), for: .touchUpInside)
-        view.addSubview(actionButton)
-        
-        endButton = UIButton()
-        endButton.layer.cornerRadius = 8
-        endButton.layer.masksToBounds = true
-        endButton.frame.size = CGSize(width: 300, height: 50)
-        endButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        endButton.setBackgroundImage(UIImage(color: .systemBlue), for: .normal)
-        endButton.setTitleColor(.white, for: .normal)
-        endButton.setTitle("结束", for: .normal)
-        endButton.addTarget(self, action: #selector(endButtonClicked), for: .touchUpInside)
-        view.addSubview(endButton)
+        maxFireTimesLabel = UILabel()
+        maxFireTimesLabel.font = UIFont.systemFont(ofSize: 20)
+        maxFireTimesLabel.textColor = UIColor.black
+        maxFireTimesLabel.text = generateFireTimesLabelString()
+        maxFireTimesLabel.sizeToFit()
+        view.addSubview(maxFireTimesLabel)
     }
     
     override func viewSafeAreaInsetsDidChange() {
         let labelSpace1 = CGFloat(20)
-        let connectSpace1 = CGFloat(40)
         let labelSpace2 = CGFloat(10)
-        let connectSpace2 = CGFloat(80)
-        let buttonSpace = CGFloat(20)
         let labelsHeight1 = nameLabel1.frame.height * 4 + labelSpace1 * 3
-        let labelsHeight2 = timesLabel.frame.height * 2 + labelSpace1
-        let buttonsHeight = actionButton.frame.height + buttonSpace + endButton.frame.height
-        let height = labelsHeight1 + connectSpace1 + labelsHeight2 + connectSpace2 + buttonsHeight
+        let labelsHeight2 = maxWinTimesLabel.frame.height * 3 + labelSpace1 * 2
+        let connectSpace = CGFloat(40)
+        let height = labelsHeight1 + connectSpace + labelsHeight2
         let centerX = (view.frame.width + view.safeAreaInsets.left - view.safeAreaInsets.right) / 2
         
         nameLabel1.frame.origin.x = centerX - nameLabel1.frame.width
@@ -177,28 +158,25 @@ class ResultViewController: UIViewController {
         moneyLabel4.frame.origin.x = nameLabel4.frame.maxX
         moneyLabel4.frame.origin.y = nameLabel4.frame.midY - moneyLabel4.frame.height / 2
         
-        timesLabel.frame.origin.x = centerX - timesLabel.frame.width / 2
-        timesLabel.frame.origin.y = nameLabel4.frame.maxY + connectSpace1
+        maxWinTimesLabel.frame.origin.x = centerX - maxWinTimesLabel.frame.width / 2
+        maxWinTimesLabel.frame.origin.y = nameLabel4.frame.maxY + connectSpace
         
-        continuousLabel.frame.origin.x = centerX - continuousLabel.frame.width / 2
-        continuousLabel.frame.origin.y = timesLabel.frame.maxY + labelSpace2
+        maxContinuousWinTimesLabel.frame.origin.x = centerX - maxContinuousWinTimesLabel.frame.width / 2
+        maxContinuousWinTimesLabel.frame.origin.y = maxWinTimesLabel.frame.maxY + labelSpace2
         
-        actionButton.frame.origin.x = centerX - actionButton.frame.width / 2
-        actionButton.frame.origin.y = continuousLabel.frame.maxY + connectSpace2
-        
-        endButton.frame.origin.x = centerX - endButton.frame.width / 2
-        endButton.frame.origin.y = actionButton.frame.maxY + buttonSpace
+        maxFireTimesLabel.frame.origin.x = centerX - maxFireTimesLabel.frame.width / 2
+        maxFireTimesLabel.frame.origin.y = maxContinuousWinTimesLabel.frame.maxY + labelSpace2
     }
     
-    func generateTimesString() -> String {
+    func generateMaxWinTimesString() -> String {
         var maxTimes: Int = 0
         var maxPlayers: [Player] = []
         let players = [game.player1, game.player2, game.player3, game.player4]
         for player in players {
-            if player.times > maxTimes {
-                maxTimes = player.times
+            if player.winTimes > maxTimes {
+                maxTimes = player.winTimes
                 maxPlayers = [player]
-            } else if player.times == maxTimes {
+            } else if player.winTimes == maxTimes {
                 maxPlayers.append(player)
             }
         }
@@ -212,19 +190,41 @@ class ResultViewController: UIViewController {
         return string
     }
     
-    func generateContinuousString() -> String {
-        var maxContinuous: Int = 0
+    func generateMaxContinuousWinTimesString() -> String {
+        var maxTimes: Int = 0
         var maxPlayers: [Player] = []
         let players = [game.player1, game.player2, game.player3, game.player4]
         for player in players {
-            if player.maxContinuous > maxContinuous {
-                maxContinuous = player.maxContinuous
+            if player.maxContinuousWinTimes > maxTimes {
+                maxTimes = player.maxContinuousWinTimes
                 maxPlayers = [player]
-            } else if player.maxContinuous == maxContinuous {
+            } else if player.maxContinuousWinTimes == maxTimes {
                 maxPlayers.append(player)
             }
         }
-        var string = "连胡最多 \(maxContinuous)次: "
+        var string = "连胡最多 \(maxTimes)次: "
+        for (index, player) in maxPlayers.enumerated() {
+            if index > 0 {
+                string += "/"
+            }
+            string += player.name
+        }
+        return string
+    }
+    
+    func generateFireTimesLabelString() -> String {
+        var maxTimes: Int = 0
+        var maxPlayers: [Player] = []
+        let players = [game.player1, game.player2, game.player3, game.player4]
+        for player in players {
+            if player.fireTimes > maxTimes {
+                maxTimes = player.fireTimes
+                maxPlayers = [player]
+            } else if player.fireTimes == maxTimes {
+                maxPlayers.append(player)
+            }
+        }
+        var string = "点炮最多 \(maxTimes)次: "
         for (index, player) in maxPlayers.enumerated() {
             if index > 0 {
                 string += "/"
@@ -244,7 +244,7 @@ class ResultViewController: UIViewController {
         let x = nameLabel1.frame.maxX - 100
         let y = nameLabel1.frame.minY - 10
         let w = CGFloat(220)
-        let h = continuousLabel.frame.maxY - nameLabel1.frame.minY + 20
+        let h = maxFireTimesLabel.frame.maxY - nameLabel1.frame.minY + 20
         let rect = CGRect(x: x, y: y, width: w, height: h)
         return image?.cropping(to: rect)
     }
@@ -257,9 +257,7 @@ class ResultViewController: UIViewController {
         present(avc, animated: true, completion: nil)
     }
     
-    @objc func endButtonClicked() {
-        dismiss(animated: true) { 
-            self.didFinishHandler?()
-        }
+    @objc func doneButtonClicked() {
+        navigationController?.popToRootViewController(animated: true)
     }
 }

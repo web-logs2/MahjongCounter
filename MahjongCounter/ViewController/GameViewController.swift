@@ -8,13 +8,12 @@
 
 import UIKit
 
-class GameViewController: UIViewController {
+class GameViewController: BaseViewController {
     
     private var player1InfoView: PlayerInfoView!
     private var player2InfoView: PlayerInfoView!
     private var player3InfoView: PlayerInfoView!
     private var player4InfoView: PlayerInfoView!
-    private var endButton: UIButton!
     
     private var game: Game!
     private var currentRoundWinner: Player?
@@ -50,72 +49,50 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.white
+        navigationItem.title = "详情"
+        navigationItem.rightBarButtonItem = UIBarButtonItem.end(target: self, action: #selector(endButtonClicked))
         
-        let player1 = game.player1
-        let player2 = game.player2
-        let player3 = game.player3
-        let player4 = game.player4
-        
-        let settings = Settings.shared
-
-        player1InfoView = PlayerInfoView(name: player1.name, times: player1.times, point: player1.point)
-        player1InfoView.backgroundColor = settings.player1Color
+        player1InfoView = PlayerInfoView(name: game.player1.name)
+        player1InfoView.backgroundColor = Settings.shared.player1Color
         player1InfoView.addTapGestureRecognizer(target: self, action: #selector(player1InfoViewTapped))
         player1InfoView.delegate = self
         view.addSubview(player1InfoView)
         
-        player2InfoView = PlayerInfoView(name: player2.name, times: player2.times, point: player2.point)
-        player2InfoView.backgroundColor = settings.player2Color
+        player2InfoView = PlayerInfoView(name: game.player2.name)
+        player2InfoView.backgroundColor = Settings.shared.player2Color
         player2InfoView.addTapGestureRecognizer(target: self, action: #selector(player2InfoViewTapped))
         player2InfoView.delegate = self
         view.addSubview(player2InfoView)
         
-        player3InfoView = PlayerInfoView(name: player3.name, times: player3.times, point: player3.point)
-        player3InfoView.backgroundColor = settings.player3Color
+        player3InfoView = PlayerInfoView(name: game.player3.name)
+        player3InfoView.backgroundColor = Settings.shared.player3Color
         player3InfoView.addTapGestureRecognizer(target: self, action: #selector(player3InfoViewTapped))
         player3InfoView.delegate = self
         view.addSubview(player3InfoView)
         
-        player4InfoView = PlayerInfoView(name: player4.name, times: player4.times, point: player4.point)
-        player4InfoView.backgroundColor = settings.player4Color
+        player4InfoView = PlayerInfoView(name: game.player4.name)
+        player4InfoView.backgroundColor = Settings.shared.player4Color
         player4InfoView.addTapGestureRecognizer(target: self, action: #selector(player4InfoViewTapped))
         player4InfoView.delegate = self
         view.addSubview(player4InfoView)
         
-        endButton = UIButton()
-        endButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        endButton.setBackgroundImage(UIImage(color: .systemBlue), for: .normal)
-        endButton.setTitleColor(.white, for: .normal)
-        endButton.setTitle("结束", for: .normal)
-        endButton.addTarget(self, action: #selector(endButtonClicked), for: .touchUpInside)
-        view.addSubview(endButton)
+        updatePlayerInfoViewsData()
     }
     
     override func viewSafeAreaInsetsDidChange() {
-        endButton.frame.size.width = view.frame.width - view.safeAreaInsets.left - view.safeAreaInsets.right
-        endButton.frame.size.height = view.safeAreaInsets.bottom + 50
-        endButton.frame.origin.x = view.safeAreaInsets.left
-        endButton.frame.origin.y = view.frame.height - endButton.frame.height
-        endButton.titleEdgeInsets.bottom = view.safeAreaInsets.bottom / 2
+        let width = view.frame.width
+        let height = (view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom) / 4
         
-        let width = endButton.frame.width / 2
-        let height = (view.frame.height - view.safeAreaInsets.top - endButton.frame.height) / 2
-        
-        player1InfoView.frame.origin.x = view.safeAreaInsets.left
         player1InfoView.frame.origin.y = view.safeAreaInsets.top
         player1InfoView.frame.size = CGSize(width: width, height: height)
         
-        player2InfoView.frame.origin.x = player1InfoView.frame.maxX
-        player2InfoView.frame.origin.y = player1InfoView.frame.minY
+        player2InfoView.frame.origin.y = player1InfoView.frame.maxY
         player2InfoView.frame.size = CGSize(width: width, height: height)
         
-        player3InfoView.frame.origin.x = player1InfoView.frame.minX
-        player3InfoView.frame.origin.y = player1InfoView.frame.maxY
+        player3InfoView.frame.origin.y = player2InfoView.frame.maxY
         player3InfoView.frame.size = CGSize(width: width, height: height)
         
-        player4InfoView.frame.origin.x = player1InfoView.frame.maxX
-        player4InfoView.frame.origin.y = player1InfoView.frame.maxY
+        player4InfoView.frame.origin.y = player3InfoView.frame.maxY
         player4InfoView.frame.size = CGSize(width: width, height: height)
     }
     
@@ -178,15 +155,19 @@ class GameViewController: UIViewController {
         let ac = UIAlertController(title: "确定结束吗", message: nil, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         ac.addAction(UIAlertAction(title: "结束", style: .destructive, handler: { action in
-            self.presentResultViewController()
+            self.endGame()
         }))
         present(ac, animated: true, completion: nil)
     }
     
-    func presentResultViewController() {
+    func endGame() {
+        didFinishHandler?()
+        pushResultViewController()
+    }
+    
+    func pushResultViewController() {
         let vc = ResultViewController(game: game)
-        vc.didFinishHandler = didFinishHandler
-        present(vc, animated: true, completion: nil)
+        navigationController?.pushViewController(vc, animated: true)
     } 
     
     func playerForPlayerInfoView(_ playerInfoView: PlayerInfoView) -> Player? {
@@ -216,29 +197,39 @@ class GameViewController: UIViewController {
         }
         // update times and continuous for player
         if currentRoundLoserPointInfo.count == 3 {
-            winner.times += 1
-            winner.continuous += 1
+            winner.winTimes += 1
+            winner.continuousWinTimes += 1
             for player in currentRoundLoserPointInfo.keys {
-                player.continuous = 0
+                player.continuousWinTimes = 0
             }
         }
         // update fires for player
-        currentRoundFirer?.fires += 1
+        currentRoundFirer?.fireTimes += 1
         // save game data
         Game.saveGame(game)
     }
     
     func updatePlayerInfoViewsData() {
-        // update UI for times
-        player1InfoView.updateTimes(game.player1.times, game.player1.continuous)
-        player2InfoView.updateTimes(game.player2.times, game.player2.continuous)
-        player3InfoView.updateTimes(game.player3.times, game.player3.continuous)
-        player4InfoView.updateTimes(game.player4.times, game.player4.continuous)
+        // update UI for win times
+        player1InfoView.winTimes = game.player1.winTimes
+        player2InfoView.winTimes = game.player2.winTimes
+        player3InfoView.winTimes = game.player3.winTimes
+        player4InfoView.winTimes = game.player4.winTimes
+        // update UI for continuous win times
+        player1InfoView.continuousWinTimes = game.player1.continuousWinTimes
+        player2InfoView.continuousWinTimes = game.player2.continuousWinTimes
+        player3InfoView.continuousWinTimes = game.player3.continuousWinTimes
+        player4InfoView.continuousWinTimes = game.player4.continuousWinTimes
+        // update UI for fire times
+        player1InfoView.fireTimes = game.player1.fireTimes
+        player2InfoView.fireTimes = game.player2.fireTimes
+        player3InfoView.fireTimes = game.player3.fireTimes
+        player4InfoView.fireTimes = game.player4.fireTimes
         // update UI for point
-        player1InfoView.updatePoint(game.player1.point)
-        player2InfoView.updatePoint(game.player2.point)
-        player3InfoView.updatePoint(game.player3.point)
-        player4InfoView.updatePoint(game.player4.point)
+        player1InfoView.point = game.player1.point
+        player2InfoView.point = game.player2.point
+        player3InfoView.point = game.player3.point
+        player4InfoView.point = game.player4.point
     }
     
     func updatePlayerInfoViewsPointButtonSelection(_ selectedPlayerInfoView: PlayerInfoView) {

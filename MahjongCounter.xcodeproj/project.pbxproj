@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5612454024160B3D00C0294C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5612453F24160B3D00C0294C /* BaseViewController.swift */; };
 		561A350824040788002BC5B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A350724040788002BC5B0 /* AppDelegate.swift */; };
 		561A350A24040788002BC5B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A350924040788002BC5B0 /* SceneDelegate.swift */; };
 		561A351124040789002BC5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 561A351024040789002BC5B0 /* Assets.xcassets */; };
@@ -17,12 +18,12 @@
 		561A352424040AD7002BC5B0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352324040AD7002BC5B0 /* HomeViewController.swift */; };
 		561A352624040AE7002BC5B0 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352524040AE7002BC5B0 /* GameViewController.swift */; };
 		561A352C24040E0D002BC5B0 /* PlayerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352B24040E0D002BC5B0 /* PlayerInfoView.swift */; };
-		561A352E240428FD002BC5B0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352D240428FD002BC5B0 /* SettingsViewController.swift */; };
 		561A35302404C43F002BC5B0 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A352F2404C43F002BC5B0 /* ResultViewController.swift */; };
 		561A35352404EA79002BC5B0 /* UIKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A35342404EA79002BC5B0 /* UIKitExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5612453F24160B3D00C0294C /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		561A350424040788002BC5B0 /* MahjongCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MahjongCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		561A350724040788002BC5B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		561A350924040788002BC5B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -35,7 +36,6 @@
 		561A352324040AD7002BC5B0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		561A352524040AE7002BC5B0 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		561A352B24040E0D002BC5B0 /* PlayerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInfoView.swift; sourceTree = "<group>"; };
-		561A352D240428FD002BC5B0 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		561A352F2404C43F002BC5B0 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		561A35342404EA79002BC5B0 /* UIKitExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,8 +106,8 @@
 			children = (
 				561A352324040AD7002BC5B0 /* HomeViewController.swift */,
 				561A352524040AE7002BC5B0 /* GameViewController.swift */,
-				561A352D240428FD002BC5B0 /* SettingsViewController.swift */,
 				561A352F2404C43F002BC5B0 /* ResultViewController.swift */,
+				5612453F24160B3D00C0294C /* BaseViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -193,8 +193,8 @@
 				561A350824040788002BC5B0 /* AppDelegate.swift in Sources */,
 				561A350A24040788002BC5B0 /* SceneDelegate.swift in Sources */,
 				561A351E240407CF002BC5B0 /* Player.swift in Sources */,
-				561A352E240428FD002BC5B0 /* SettingsViewController.swift in Sources */,
 				561A352C24040E0D002BC5B0 /* PlayerInfoView.swift in Sources */,
+				5612454024160B3D00C0294C /* BaseViewController.swift in Sources */,
 				561A352624040AE7002BC5B0 /* GameViewController.swift in Sources */,
 				561A35352404EA79002BC5B0 /* UIKitExtension.swift in Sources */,
 				561A352424040AD7002BC5B0 /* HomeViewController.swift in Sources */,

@@ -67,6 +67,33 @@ extension UIImage {
     }
 }
 
+extension UIBarButtonItem {
+    
+    static func add(target: Any, action: Selector) -> UIBarButtonItem {
+        return UIBarButtonItem(barButtonSystemItem: .add, target: target, action: action)
+    }
+    
+    static func action(target: Any, action: Selector) -> UIBarButtonItem {
+        return UIBarButtonItem(barButtonSystemItem: .action, target: target, action: action)
+    }
+    
+    static func end(target: Any, action: Selector) -> UIBarButtonItem {
+        return UIBarButtonItem(title: "结束", style: .plain, target: target, action: action)
+    }
+    
+    static func done(target: Any, action: Selector) -> UIBarButtonItem {
+        return UIBarButtonItem(title: "完成", style: .done, target: target, action: action)
+    }
+    
+    static func cancel(target: Any, action: Selector) -> UIBarButtonItem {
+        return UIBarButtonItem(title: "取消", style: .plain, target: target, action: action)
+    }
+    
+    static func back() -> UIBarButtonItem {
+        return UIBarButtonItem(title: "返回", style: .plain, target: nil, action: nil)
+    }
+}
+
 extension UIView {
     
     @discardableResult

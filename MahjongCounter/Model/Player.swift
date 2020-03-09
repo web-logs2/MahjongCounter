@@ -13,23 +13,19 @@ class Player: Codable {
     var name: String = ""
     var point: Int = 0
     
-    /// win times counter
-    var times: Int = 0 
+    var winTimes: Int = 0 
     
-    /// continuous win times counter
-    var continuous: Int = 0 {
+    var continuousWinTimes: Int = 0 {
         didSet {
-            if continuous > maxContinuous {
-                maxContinuous = continuous
+            if continuousWinTimes > maxContinuousWinTimes {
+                maxContinuousWinTimes = continuousWinTimes
             }
         }
     }
     
-    /// max continuous win times
-    private(set) var maxContinuous: Int = 0 
+    private(set) var maxContinuousWinTimes: Int = 0 
     
-    /// fire for other players counter
-    var fires: Int = 0
+    var fireTimes: Int = 0
     
     init(name: String) {
         self.name = name;

@@ -19,7 +19,9 @@ protocol PlayerInfoViewDelegate: AnyObject {
 class PlayerInfoView: UIView {
     
     private var nameLabel: UILabel!
-    private var timesLabel: UILabel!
+    private var winTimesLabel: UILabel!
+    private var continuousWinTimesLabel: UILabel!
+    private var fireTimesLabel: UILabel!
     private var pointLabel: UILabel!
     
     private var doneButton: UIButton!
@@ -37,8 +39,32 @@ class PlayerInfoView: UIView {
     private(set) var locked: Bool = false
     
     weak var delegate: PlayerInfoViewDelegate?
+    
+    var winTimes: Int = 0 {
+        didSet {
+            updateWinTimes()
+        }
+    }
+    
+    var continuousWinTimes: Int = 0 {
+        didSet {
+            updateContinuousWinTimes()
+        }
+    }
+    
+    var fireTimes: Int = 0 {
+        didSet {
+            updateFireTimes()
+        }
+    }
+    
+    var point: Int = 0 {
+        didSet {
+            updatePoint()
+        }
+    }
 
-    init(name: String, times: Int, point: Int) {
+    init(name: String) {
         super.init(frame: .zero)
         
         nameLabel = UILabel()
@@ -48,18 +74,23 @@ class PlayerInfoView: UIView {
         nameLabel.sizeToFit()
         addSubview(nameLabel)
         
-        timesLabel = UILabel()
-        timesLabel.font = UIFont.systemFont(ofSize: 20)
-        timesLabel.textColor = UIColor.black
-        timesLabel.text = times.timesString;
-        timesLabel.sizeToFit()
-        addSubview(timesLabel)
+        winTimesLabel = UILabel()
+        winTimesLabel.font = UIFont.systemFont(ofSize: 20)
+        winTimesLabel.textColor = UIColor.black
+        addSubview(winTimesLabel)
+        
+        continuousWinTimesLabel = UILabel()
+        continuousWinTimesLabel.font = UIFont.systemFont(ofSize: 20)
+        continuousWinTimesLabel.textColor = UIColor.black
+        addSubview(continuousWinTimesLabel)
+        
+        fireTimesLabel = UILabel()
+        fireTimesLabel.font = UIFont.systemFont(ofSize: 20)
+        fireTimesLabel.textColor = UIColor.black
+        addSubview(fireTimesLabel)
         
         pointLabel = UILabel()
         pointLabel.font = UIFont.systemFont(ofSize: 50)
-        pointLabel.textColor = point.pointColor
-        pointLabel.text = point.pointString;
-        pointLabel.sizeToFit()
         addSubview(pointLabel)
         
         let buttonSize = CGSize(width: 60, height: 60)
@@ -195,52 +226,58 @@ class PlayerInfoView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        nameLabel.frame.origin.x = 20
-        nameLabel.frame.origin.y = 20
+        let space = CGFloat(10)
+        let height1 = winTimesLabel.frame.height * 2 + space
+        let height2 = pointButton1.frame.height * 2 + space
         
-        timesLabel.frame.origin.x = nameLabel.frame.minX
-        timesLabel.frame.origin.y = nameLabel.frame.maxY + 10
+        nameLabel.frame.origin.x = layoutMargins.left
+        nameLabel.frame.origin.y = (frame.height - nameLabel.frame.height) / 2
         
-        pointLabel.frame.origin.x = (frame.width - pointLabel.frame.width) / 2
-        pointLabel.frame.origin.y = (frame.height + nameLabel.frame.maxY - pointLabel.frame.height) / 2
+        winTimesLabel.frame.origin.x = nameLabel.frame.maxX + 10
+        winTimesLabel.frame.origin.y = (frame.height - height1) / 2
         
-        let buttonSpace = CGFloat(10)
-        let width1 = doneButton.frame.width + buttonSpace + cancelButton.frame.width
-        let height1 = doneButton.frame.height
-        let width2 = pointButton1.frame.width * 2 + buttonSpace
-        let height2 = pointButton1.frame.height * 3 + buttonSpace * 2
+        continuousWinTimesLabel.frame.origin.x = winTimesLabel.frame.maxX + 10
+        continuousWinTimesLabel.frame.origin.y = winTimesLabel.frame.midY - continuousWinTimesLabel.frame.height / 2
         
-        doneButton.frame.origin.x = (frame.width - width1) / 2
-        doneButton.frame.origin.y = (frame.height + nameLabel.frame.maxY - height1) / 2
+        fireTimesLabel.frame.origin.x = winTimesLabel.frame.minX
+        fireTimesLabel.frame.origin.y = winTimesLabel.frame.maxY + space
         
-        cancelButton.frame.origin.x = doneButton.frame.maxX + buttonSpace
-        cancelButton.frame.origin.y = doneButton.frame.minY
+        pointLabel.frame.origin.x = frame.width - layoutMargins.right - pointLabel.frame.width
+        pointLabel.frame.origin.y = (frame.height - pointLabel.frame.height) / 2
+        
+        cancelButton.frame.origin.x = frame.width - layoutMargins.right - cancelButton.frame.width
+        cancelButton.frame.origin.y = (frame.height - cancelButton.frame.height) / 2
+        
+        doneButton.frame.origin.x = cancelButton.frame.minX - space - doneButton.frame.width
+        doneButton.frame.origin.y = (frame.height - doneButton.frame.height) / 2
         
         fireButton.frame.origin.x = nameLabel.frame.maxX + 20
-        fireButton.frame.origin.y = nameLabel.frame.midY - fireButton.frame.height / 2
+        fireButton.frame.origin.y = (frame.height - fireButton.frame.height) / 2
         
-        pointButton1.frame.origin.x = (frame.width - width2) / 2
-        pointButton1.frame.origin.y = (frame.height + nameLabel.frame.maxY - height2) / 2
+        pointButton3.frame.origin.x = frame.width - layoutMargins.right - pointButton3.frame.width
+        pointButton3.frame.origin.y = (frame.height - height2) / 2
         
-        pointButton2.frame.origin.x = pointButton1.frame.maxX + buttonSpace
-        pointButton2.frame.origin.y = pointButton1.frame.minY
+        pointButton2.frame.origin.x = pointButton3.frame.minX - space - pointButton2.frame.width
+        pointButton2.frame.origin.y = pointButton3.frame.minY
         
-        pointButton3.frame.origin.x = pointButton1.frame.minX
-        pointButton3.frame.origin.y = pointButton1.frame.maxY + buttonSpace
+        pointButton1.frame.origin.x = pointButton2.frame.minX - space - pointButton1.frame.width
+        pointButton1.frame.origin.y = pointButton3.frame.minY
         
-        pointButton4.frame.origin.x = pointButton3.frame.maxX + buttonSpace
-        pointButton4.frame.origin.y = pointButton3.frame.minY
+        pointButton6.frame.origin.x = pointButton3.frame.minX
+        pointButton6.frame.origin.y = pointButton3.frame.maxY + space
         
-        pointButton5.frame.origin.x = pointButton3.frame.minX
-        pointButton5.frame.origin.y = pointButton3.frame.maxY + buttonSpace
+        pointButton5.frame.origin.x = pointButton2.frame.minX
+        pointButton5.frame.origin.y = pointButton6.frame.minY
         
-        pointButton6.frame.origin.x = pointButton5.frame.maxX + buttonSpace
-        pointButton6.frame.origin.y = pointButton5.frame.minY
+        pointButton4.frame.origin.x = pointButton1.frame.minX
+        pointButton4.frame.origin.y = pointButton6.frame.minY
     }
     
     func setWinUI() {
         locked = true
-        timesLabel.isHidden = true
+        winTimesLabel.isHidden = true
+        continuousWinTimesLabel.isHidden = true
+        fireTimesLabel.isHidden = true
         pointLabel.isHidden = true
         doneButton.isHidden = false
         cancelButton.isHidden = false
@@ -255,7 +292,9 @@ class PlayerInfoView: UIView {
     
     func setLoseUI() {
         locked = true
-        timesLabel.isHidden = true
+        winTimesLabel.isHidden = true
+        continuousWinTimesLabel.isHidden = true
+        fireTimesLabel.isHidden = true
         pointLabel.isHidden = true
         doneButton.isHidden = true
         cancelButton.isHidden = true
@@ -270,7 +309,9 @@ class PlayerInfoView: UIView {
     
     func resetUI() {
         locked = false
-        timesLabel.isHidden = false
+        winTimesLabel.isHidden = false
+        continuousWinTimesLabel.isHidden = false
+        fireTimesLabel.isHidden = false
         pointLabel.isHidden = false
         doneButton.isHidden = true
         cancelButton.isHidden = true
@@ -291,24 +332,32 @@ class PlayerInfoView: UIView {
         updateSelection(withSelectedButton: nil)
     }
     
-    func updateTimes(_ times: Int, _ continuous: Int) {
-        if continuous > 0 {
-            timesLabel.text = times.timesString + " " + continuous.continuousString
-        } else {
-            timesLabel.text = times.timesString
-        }
-        timesLabel.sizeToFit()
+    private func updateWinTimes() {
+        winTimesLabel.text = winTimes.winTimesString
+        winTimesLabel.sizeToFit()
         setNeedsLayout()
     }
     
-    func updatePoint(_ point: Int) {
+    private func updateContinuousWinTimes() {
+        continuousWinTimesLabel.text = continuousWinTimes.continuousWinTimesString
+        continuousWinTimesLabel.sizeToFit()
+        setNeedsLayout()
+    }
+    
+    private func updateFireTimes() {
+        fireTimesLabel.text = fireTimes.fireTimesString
+        fireTimesLabel.sizeToFit()
+        setNeedsLayout()
+    }
+    
+    private func updatePoint() {
         pointLabel.textColor = point.pointColor
         pointLabel.text = point.pointString;
         pointLabel.sizeToFit()
         setNeedsLayout()
     }
     
-    func didClickPointButton(_ button: UIButton) {
+    private func didClickPointButton(_ button: UIButton) {
         if button.isSelected {
             return
         }
@@ -316,15 +365,15 @@ class PlayerInfoView: UIView {
         delegate?.playerInfoView(self, pointButtonDidClick: button)
     }
      
-    @objc func doneButtonClicked() {
+    @objc private func doneButtonClicked() {
         delegate?.playerInfoView(self, doneButtonDidClick: doneButton)
     }
     
-    @objc func cancelButtonClicked() {
+    @objc private func cancelButtonClicked() {
         delegate?.playerInfoView(self, cancelButtonDidClick: cancelButton)
     }
     
-    @objc func fireButtonClicked() {
+    @objc private func fireButtonClicked() {
         if fireButton.isSelected {
             return
         }
@@ -332,31 +381,31 @@ class PlayerInfoView: UIView {
         delegate?.playerInfoView(self, fireButtonDidClick: fireButton)
     }
     
-    @objc func pointButton1Clicked() {
+    @objc private func pointButton1Clicked() {
         didClickPointButton(pointButton1)
     }
     
-    @objc func pointButton2Clicked() {
+    @objc private func pointButton2Clicked() {
         didClickPointButton(pointButton2)
     }
     
-    @objc func pointButton3Clicked() {
+    @objc private func pointButton3Clicked() {
         didClickPointButton(pointButton3)
     }
     
-    @objc func pointButton4Clicked() {
+    @objc private func pointButton4Clicked() {
         didClickPointButton(pointButton4)
     }
     
-    @objc func pointButton5Clicked() {
+    @objc private func pointButton5Clicked() {
         didClickPointButton(pointButton5)
     }
     
-    @objc func pointButton6Clicked() {
+    @objc private func pointButton6Clicked() {
         didClickPointButton(pointButton6)
     }
     
-    func updateSelection(withSelectedButton selectedButton: UIButton?) {
+    private func updateSelection(withSelectedButton selectedButton: UIButton?) {
         pointButton1.isSelected = selectedButton === pointButton1
         pointButton2.isSelected = selectedButton === pointButton2
         pointButton3.isSelected = selectedButton === pointButton3
@@ -385,11 +434,18 @@ extension Int {
         return String(self)
     }
     
-    var timesString: String {
+    var winTimesString: String {
         return "胡牌: \(self)"
     }
     
-    var continuousString: String {
-        return "连胡: \(self)"
+    var continuousWinTimesString: String {
+        if self > 0 {
+            return "连胡: \(self)"
+        }
+        return ""
+    }
+    
+    var fireTimesString: String {
+        return "点炮: \(self)"
     }
 }
