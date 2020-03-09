@@ -28,6 +28,9 @@ class Player: Codable {
     /// max continuous win times
     private(set) var maxContinuous: Int = 0 
     
+    /// fire for other players counter
+    var fires: Int = 0
+    
     init(name: String) {
         self.name = name;
     }

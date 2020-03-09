@@ -18,6 +18,7 @@ class GameViewController: UIViewController {
     
     private var game: Game!
     private var currentRoundWinner: Player?
+    private var currentRoundFirer: Player?
     private var currentRoundLoserPointInfo: [Player: Int] = [:]
     private var locked: Bool {
         if player1InfoView.locked {
@@ -123,6 +124,7 @@ class GameViewController: UIViewController {
             return
         }
         currentRoundWinner = game.player1
+        currentRoundFirer = nil
         currentRoundLoserPointInfo = [:]
         player1InfoView.setWinUI()
         player2InfoView.setLoseUI()
@@ -135,6 +137,7 @@ class GameViewController: UIViewController {
             return
         }
         currentRoundWinner = game.player2
+        currentRoundFirer = nil
         currentRoundLoserPointInfo = [:]
         player2InfoView.setWinUI()
         player1InfoView.setLoseUI()
@@ -147,6 +150,7 @@ class GameViewController: UIViewController {
             return
         }
         currentRoundWinner = game.player3
+        currentRoundFirer = nil
         currentRoundLoserPointInfo = [:]
         player3InfoView.setWinUI()
         player1InfoView.setLoseUI()
@@ -159,6 +163,7 @@ class GameViewController: UIViewController {
             return
         }
         currentRoundWinner = game.player4
+        currentRoundFirer = nil
         currentRoundLoserPointInfo = [:]
         player4InfoView.setWinUI()
         player1InfoView.setLoseUI()
@@ -217,6 +222,8 @@ class GameViewController: UIViewController {
                 player.continuous = 0
             }
         }
+        // update fires for player
+        currentRoundFirer?.fires += 1
         // save game data
         Game.saveGame(game)
     }
@@ -234,7 +241,7 @@ class GameViewController: UIViewController {
         player4InfoView.updatePoint(game.player4.point)
     }
     
-    func updatePlayerInfoViewsButtonSelection(_ selectedPlayerInfoView: PlayerInfoView) {
+    func updatePlayerInfoViewsPointButtonSelection(_ selectedPlayerInfoView: PlayerInfoView) {
         if selectedPlayerInfoView != player1InfoView {
             player1InfoView.clearPointButtonSelection()
         }
@@ -246,6 +253,21 @@ class GameViewController: UIViewController {
         }
         if selectedPlayerInfoView != player4InfoView {
             player4InfoView.clearPointButtonSelection()
+        } 
+    }
+    
+    func updatePlayerInfoViewsFireButtonSelection(_ selectedPlayerInfoView: PlayerInfoView) {
+        if selectedPlayerInfoView != player1InfoView {
+            player1InfoView.clearFireButtonSelection()
+        }
+        if selectedPlayerInfoView != player2InfoView {
+            player2InfoView.clearFireButtonSelection()
+        }
+        if selectedPlayerInfoView != player3InfoView {
+            player3InfoView.clearFireButtonSelection()
+        }
+        if selectedPlayerInfoView != player4InfoView {
+            player4InfoView.clearFireButtonSelection()
         } 
     }
     
@@ -276,13 +298,13 @@ extension GameViewController: PlayerInfoViewDelegate {
         checkPointButtonSelection {
             self.updatePlayerData()
             self.updatePlayerInfoViewsData()
-            self.updatePlayerInfoViewsButtonSelection(playerInfoView)
+            self.updatePlayerInfoViewsPointButtonSelection(playerInfoView)
             self.updatePlayerInfoViewsUIStatus()
         }
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, cancelButtonDidClick button: UIButton) {
-        updatePlayerInfoViewsButtonSelection(playerInfoView)
+        updatePlayerInfoViewsPointButtonSelection(playerInfoView)
         updatePlayerInfoViewsUIStatus()
     }
     
@@ -298,5 +320,10 @@ extension GameViewController: PlayerInfoViewDelegate {
         } else {
             currentRoundLoserPointInfo[player] = nil
         }
+    }
+    
+    func playerInfoView(_ playerInfoView: PlayerInfoView, fireButtonDidClick button: UIButton) {
+        updatePlayerInfoViewsFireButtonSelection(playerInfoView)
+        currentRoundFirer = playerForPlayerInfoView(playerInfoView)
     }
 }

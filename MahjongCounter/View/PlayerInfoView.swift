@@ -13,6 +13,7 @@ protocol PlayerInfoViewDelegate: AnyObject {
     func playerInfoView(_ playerInfoView: PlayerInfoView, doneButtonDidClick button: UIButton)
     func playerInfoView(_ playerInfoView: PlayerInfoView, cancelButtonDidClick button: UIButton)
     func playerInfoView(_ playerInfoView: PlayerInfoView, pointButtonDidClick button: UIButton)
+    func playerInfoView(_ playerInfoView: PlayerInfoView, fireButtonDidClick button: UIButton)
 }
 
 class PlayerInfoView: UIView {
@@ -23,6 +24,8 @@ class PlayerInfoView: UIView {
     
     private var doneButton: UIButton!
     private var cancelButton: UIButton!
+    
+    private var fireButton: UIButton!
     
     private var pointButton1: UIButton!
     private var pointButton2: UIButton!
@@ -82,6 +85,19 @@ class PlayerInfoView: UIView {
         cancelButton.setTitle("✗", for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
         addSubview(cancelButton)
+        
+        fireButton = UIButton()
+        fireButton.frame.size = buttonSize
+        fireButton.layer.cornerRadius = fireButton.frame.width / 2
+        fireButton.layer.masksToBounds = true
+        fireButton.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        fireButton.setBackgroundImage(UIImage(color: .red), for: .normal)
+        fireButton.setBackgroundImage(UIImage(color: .white), for: .selected)
+        fireButton.setTitleColor(.white, for: .normal)
+        fireButton.setTitleColor(.red, for: .selected)
+        fireButton.setTitle("炮", for: .normal)
+        fireButton.addTarget(self, action: #selector(fireButtonClicked), for: .touchUpInside)
+        addSubview(fireButton)
         
         pointButton1 = UIButton()
         pointButton1.frame.size = buttonSize
@@ -163,6 +179,7 @@ class PlayerInfoView: UIView {
         
         doneButton.isHidden = true
         cancelButton.isHidden = true
+        fireButton.isHidden = true
         pointButton1.isHidden = true
         pointButton2.isHidden = true
         pointButton3.isHidden = true
@@ -178,10 +195,10 @@ class PlayerInfoView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        nameLabel.frame.origin.x = (frame.width - nameLabel.frame.width) / 2
+        nameLabel.frame.origin.x = 20
         nameLabel.frame.origin.y = 20
         
-        timesLabel.frame.origin.x = (frame.width - timesLabel.frame.width) / 2
+        timesLabel.frame.origin.x = nameLabel.frame.minX
         timesLabel.frame.origin.y = nameLabel.frame.maxY + 10
         
         pointLabel.frame.origin.x = (frame.width - pointLabel.frame.width) / 2
@@ -198,6 +215,9 @@ class PlayerInfoView: UIView {
         
         cancelButton.frame.origin.x = doneButton.frame.maxX + buttonSpace
         cancelButton.frame.origin.y = doneButton.frame.minY
+        
+        fireButton.frame.origin.x = nameLabel.frame.maxX + 20
+        fireButton.frame.origin.y = nameLabel.frame.midY - fireButton.frame.height / 2
         
         pointButton1.frame.origin.x = (frame.width - width2) / 2
         pointButton1.frame.origin.y = (frame.height + nameLabel.frame.maxY - height2) / 2
@@ -224,6 +244,7 @@ class PlayerInfoView: UIView {
         pointLabel.isHidden = true
         doneButton.isHidden = false
         cancelButton.isHidden = false
+        fireButton.isHidden = true
         pointButton1.isHidden = true
         pointButton2.isHidden = true
         pointButton3.isHidden = true
@@ -238,6 +259,7 @@ class PlayerInfoView: UIView {
         pointLabel.isHidden = true
         doneButton.isHidden = true
         cancelButton.isHidden = true
+        fireButton.isHidden = false
         pointButton1.isHidden = false
         pointButton2.isHidden = false
         pointButton3.isHidden = false
@@ -252,12 +274,17 @@ class PlayerInfoView: UIView {
         pointLabel.isHidden = false
         doneButton.isHidden = true
         cancelButton.isHidden = true
+        fireButton.isHidden = true
         pointButton1.isHidden = true
         pointButton2.isHidden = true
         pointButton3.isHidden = true
         pointButton4.isHidden = true
         pointButton5.isHidden = true
         pointButton6.isHidden = true
+    }
+    
+    func clearFireButtonSelection() {
+        fireButton.isSelected = false
     }
     
     func clearPointButtonSelection() {
@@ -295,6 +322,14 @@ class PlayerInfoView: UIView {
     
     @objc func cancelButtonClicked() {
         delegate?.playerInfoView(self, cancelButtonDidClick: cancelButton)
+    }
+    
+    @objc func fireButtonClicked() {
+        if fireButton.isSelected {
+            return
+        }
+        fireButton.isSelected = true
+        delegate?.playerInfoView(self, fireButtonDidClick: fireButton)
     }
     
     @objc func pointButton1Clicked() {
