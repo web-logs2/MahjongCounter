@@ -11,14 +11,12 @@ import UIKit
 extension UIColor {
     
     private static func generateColors() -> [UIColor] {
-        let color1 = UIColor(red: 255/255.0, green: 178/255.0, blue: 172/255.0, alpha: 1)
-        let color2 = UIColor(red: 239/255.0, green: 220/255.0, blue: 212/255.0, alpha: 1)
-        let color3 = UIColor(red: 230/255.0, green: 200/255.0, blue: 225/255.0, alpha: 1)
-        let color4 = UIColor(red: 255/255.0, green: 200/255.0, blue: 120/255.0, alpha: 1)
-        let color5 = UIColor(red: 255/255.0, green: 160/255.0, blue: 115/255.0, alpha: 1)
-        let color6 = UIColor(red: 182/255.0, green: 223/255.0, blue: 172/255.0, alpha: 1)
-        let color7 = UIColor(red: 169/255.0, green: 215/255.0, blue: 222/255.0, alpha: 1)
-        return [color1, color2, color3, color4, color5, color6, color7]
+        let color1 = UIColor(red: 220/255.0, green: 197/255.0, blue: 224/255.0, alpha: 1)
+        let color2 = UIColor(red: 241/255.0, green: 169/255.0, blue: 158/255.0, alpha: 1)
+        let color3 = UIColor(red: 161/255.0, green: 222/255.0, blue: 209/255.0, alpha: 1)
+        let color4 = UIColor(red: 252/255.0, green: 226/255.0, blue: 167/255.0, alpha: 1)
+        let color5 = UIColor(red: 195/255.0, green: 238/255.0, blue: 245/255.0, alpha: 1)
+        return [color1, color2, color3, color4, color5]
     }
     
     private static var colors = generateColors()
@@ -57,13 +55,6 @@ extension UIImage {
             return nil
         }
         self.init(cgImage: cgImage)
-    }
-    
-    func cropping(to rect: CGRect) -> UIImage? {
-        if let croppedImage = self.cgImage?.cropping(to: rect) {
-            return UIImage(cgImage: croppedImage, scale: self.scale, orientation: .up)
-        }
-        return nil
     }
 }
 

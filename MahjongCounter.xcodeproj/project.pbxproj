@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5612454024160B3D00C0294C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5612453F24160B3D00C0294C /* BaseViewController.swift */; };
+		561245422417352D00C0294C /* PlayerResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561245412417352D00C0294C /* PlayerResultView.swift */; };
 		561A350824040788002BC5B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A350724040788002BC5B0 /* AppDelegate.swift */; };
 		561A350A24040788002BC5B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A350924040788002BC5B0 /* SceneDelegate.swift */; };
 		561A351124040789002BC5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 561A351024040789002BC5B0 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		5612453F24160B3D00C0294C /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		561245412417352D00C0294C /* PlayerResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerResultView.swift; sourceTree = "<group>"; };
 		561A350424040788002BC5B0 /* MahjongCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MahjongCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		561A350724040788002BC5B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		561A350924040788002BC5B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				561A352B24040E0D002BC5B0 /* PlayerInfoView.swift */,
+				561245412417352D00C0294C /* PlayerResultView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -198,6 +201,7 @@
 				561A352624040AE7002BC5B0 /* GameViewController.swift in Sources */,
 				561A35352404EA79002BC5B0 /* UIKitExtension.swift in Sources */,
 				561A352424040AD7002BC5B0 /* HomeViewController.swift in Sources */,
+				561245422417352D00C0294C /* PlayerResultView.swift in Sources */,
 				561A352224040854002BC5B0 /* Settings.swift in Sources */,
 				561A351C240407AB002BC5B0 /* Game.swift in Sources */,
 				561A35302404C43F002BC5B0 /* ResultViewController.swift in Sources */,

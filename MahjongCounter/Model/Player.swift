@@ -23,7 +23,9 @@ class Player: Codable {
         }
     }
     
-    private(set) var maxContinuousWinTimes: Int = 0 
+    private(set) var maxContinuousWinTimes: Int = 0
+    
+    var ownDrawTimes: Int = 0
     
     var fireTimes: Int = 0
     

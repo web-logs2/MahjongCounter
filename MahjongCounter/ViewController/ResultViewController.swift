@@ -10,17 +10,11 @@ import UIKit
 
 class ResultViewController: BaseViewController {
     
-    private var nameLabel1: UILabel!
-    private var nameLabel2: UILabel!
-    private var nameLabel3: UILabel!
-    private var nameLabel4: UILabel!
-    private var moneyLabel1: UILabel!
-    private var moneyLabel2: UILabel!
-    private var moneyLabel3: UILabel!
-    private var moneyLabel4: UILabel!
-    private var maxWinTimesLabel: UILabel!
-    private var maxContinuousWinTimesLabel: UILabel!
-    private var maxFireTimesLabel: UILabel!
+    private var containerView: UIView!
+    private var playerResultView1: PlayerResultView!
+    private var playerResultView2: PlayerResultView!
+    private var playerResultView3: PlayerResultView!
+    private var playerResultView4: PlayerResultView!
     
     private var game: Game!
     
@@ -36,220 +30,82 @@ class ResultViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "结果"
+        navigationItem.title = "统计"
         navigationItem.leftBarButtonItem = UIBarButtonItem.action(target: self, action: #selector(actionButtonClicked))
         navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(doneButtonClicked))
         
-        let player1 = game.player1
-        let player2 = game.player2
-        let player3 = game.player3
-        let player4 = game.player4
+        containerView = UIView()
+        view.addSubview(containerView)
         
-        nameLabel1 = UILabel()
-        nameLabel1.font = UIFont.systemFont(ofSize: 24)
-        nameLabel1.textColor = UIColor.black
-        nameLabel1.text = "\(player1.name)(\(player1.winTimes)): "
-        nameLabel1.sizeToFit()
-        view.addSubview(nameLabel1)
+        playerResultView1 = PlayerResultView(name: game.player1.name)
+        playerResultView1.backgroundColor = Settings.shared.player1Color
+        playerResultView1.winTimes = game.player1.winTimes
+        playerResultView1.maxContinuousWinTimes = game.player1.maxContinuousWinTimes
+        playerResultView1.ownDrawTimes = game.player1.ownDrawTimes
+        playerResultView1.fireTimes = game.player1.fireTimes
+        playerResultView1.money = game.player1.point * Settings.shared.moneyPerPoint
+        containerView.addSubview(playerResultView1)
         
-        nameLabel2 = UILabel()
-        nameLabel2.font = UIFont.systemFont(ofSize: 24)
-        nameLabel2.textColor = UIColor.black
-        nameLabel2.text = "\(player2.name)(\(player2.winTimes)): "
-        nameLabel2.sizeToFit()
-        view.addSubview(nameLabel2)
+        playerResultView2 = PlayerResultView(name: game.player2.name)
+        playerResultView2.backgroundColor = Settings.shared.player2Color
+        playerResultView2.winTimes = game.player2.winTimes
+        playerResultView2.maxContinuousWinTimes = game.player2.maxContinuousWinTimes
+        playerResultView2.ownDrawTimes = game.player2.ownDrawTimes
+        playerResultView2.fireTimes = game.player2.fireTimes
+        playerResultView2.money = game.player2.point * Settings.shared.moneyPerPoint
+        containerView.addSubview(playerResultView2)
         
-        nameLabel3 = UILabel()
-        nameLabel3.font = UIFont.systemFont(ofSize: 24)
-        nameLabel3.textColor = UIColor.black
-        nameLabel3.text = "\(player3.name)(\(player3.winTimes)): "
-        nameLabel3.sizeToFit()
-        view.addSubview(nameLabel3)
+        playerResultView3 = PlayerResultView(name: game.player3.name)
+        playerResultView3.backgroundColor = Settings.shared.player3Color
+        playerResultView3.winTimes = game.player3.winTimes
+        playerResultView3.maxContinuousWinTimes = game.player3.maxContinuousWinTimes
+        playerResultView3.ownDrawTimes = game.player3.ownDrawTimes
+        playerResultView3.fireTimes = game.player3.fireTimes
+        playerResultView3.money = game.player3.point * Settings.shared.moneyPerPoint
+        containerView.addSubview(playerResultView3)
         
-        nameLabel4 = UILabel()
-        nameLabel4.font = UIFont.systemFont(ofSize: 24)
-        nameLabel4.textColor = UIColor.black
-        nameLabel4.text = "\(player4.name)(\(player4.winTimes)): "
-        nameLabel4.sizeToFit()
-        view.addSubview(nameLabel4)
+        playerResultView4 = PlayerResultView(name: game.player4.name)
+        playerResultView4.backgroundColor = Settings.shared.player4Color
+        playerResultView4.winTimes = game.player4.winTimes
+        playerResultView4.maxContinuousWinTimes = game.player4.maxContinuousWinTimes
+        playerResultView4.ownDrawTimes = game.player4.ownDrawTimes
+        playerResultView4.fireTimes = game.player4.fireTimes
+        playerResultView4.money = game.player4.point * Settings.shared.moneyPerPoint
+        containerView.addSubview(playerResultView4)
         
-        let settings = Settings.shared
-        
-        moneyLabel1 = UILabel()
-        moneyLabel1.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel1.textColor = player1.point.pointColor
-        moneyLabel1.text = (player1.point * settings.moneyPerPoint).pointString
-        moneyLabel1.sizeToFit()
-        view.addSubview(moneyLabel1)
-        
-        moneyLabel2 = UILabel()
-        moneyLabel2.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel2.textColor = player2.point.pointColor
-        moneyLabel2.text = (player2.point * settings.moneyPerPoint).pointString
-        moneyLabel2.sizeToFit()
-        view.addSubview(moneyLabel2)
-        
-        moneyLabel3 = UILabel()
-        moneyLabel3.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel3.textColor = player3.point.pointColor
-        moneyLabel3.text = (player3.point * settings.moneyPerPoint).pointString
-        moneyLabel3.sizeToFit()
-        view.addSubview(moneyLabel3)
-        
-        moneyLabel4 = UILabel()
-        moneyLabel4.font = UIFont.systemFont(ofSize: 36)
-        moneyLabel4.textColor = player4.point.pointColor
-        moneyLabel4.text = (player4.point * settings.moneyPerPoint).pointString
-        moneyLabel4.sizeToFit()
-        view.addSubview(moneyLabel4)
-        
-        maxWinTimesLabel = UILabel()
-        maxWinTimesLabel.font = UIFont.systemFont(ofSize: 20)
-        maxWinTimesLabel.textColor = UIColor.black
-        maxWinTimesLabel.text = generateMaxWinTimesString()
-        maxWinTimesLabel.sizeToFit()
-        view.addSubview(maxWinTimesLabel)
-        
-        maxContinuousWinTimesLabel = UILabel()
-        maxContinuousWinTimesLabel.font = UIFont.systemFont(ofSize: 20)
-        maxContinuousWinTimesLabel.textColor = UIColor.black
-        maxContinuousWinTimesLabel.text = generateMaxContinuousWinTimesString()
-        maxContinuousWinTimesLabel.sizeToFit()
-        view.addSubview(maxContinuousWinTimesLabel)
-        
-        maxFireTimesLabel = UILabel()
-        maxFireTimesLabel.font = UIFont.systemFont(ofSize: 20)
-        maxFireTimesLabel.textColor = UIColor.black
-        maxFireTimesLabel.text = generateFireTimesLabelString()
-        maxFireTimesLabel.sizeToFit()
-        view.addSubview(maxFireTimesLabel)
+        updateBestData()
     }
     
     override func viewSafeAreaInsetsDidChange() {
-        let labelSpace1 = CGFloat(20)
-        let labelSpace2 = CGFloat(10)
-        let labelsHeight1 = nameLabel1.frame.height * 4 + labelSpace1 * 3
-        let labelsHeight2 = maxWinTimesLabel.frame.height * 3 + labelSpace1 * 2
-        let connectSpace = CGFloat(40)
-        let height = labelsHeight1 + connectSpace + labelsHeight2
-        let centerX = (view.frame.width + view.safeAreaInsets.left - view.safeAreaInsets.right) / 2
+        containerView.frame.origin.x = 0
+        containerView.frame.origin.y = view.safeAreaInsets.top
+        containerView.frame.size.width = view.frame.width
+        containerView.frame.size.height = view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
         
-        nameLabel1.frame.origin.x = centerX - nameLabel1.frame.width
-        nameLabel1.frame.origin.y = (view.frame.height - height) / 2
+        let height = containerView.frame.height / 4
         
-        nameLabel2.frame.origin.x = centerX - nameLabel2.frame.width
-        nameLabel2.frame.origin.y = nameLabel1.frame.maxY + labelSpace1
+        playerResultView1.frame.origin.x = 0
+        playerResultView1.frame.origin.y = 0
+        playerResultView1.frame.size.width = containerView.frame.width
+        playerResultView1.frame.size.height = height
         
-        nameLabel3.frame.origin.x = centerX - nameLabel3.frame.width
-        nameLabel3.frame.origin.y = nameLabel2.frame.maxY + labelSpace1
+        playerResultView2.frame.origin.x = 0
+        playerResultView2.frame.origin.y = playerResultView1.frame.maxY
+        playerResultView2.frame.size.width = containerView.frame.width
+        playerResultView2.frame.size.height = height
         
-        nameLabel4.frame.origin.x = centerX - nameLabel4.frame.width
-        nameLabel4.frame.origin.y = nameLabel3.frame.maxY + labelSpace1
+        playerResultView3.frame.origin.x = 0
+        playerResultView3.frame.origin.y = playerResultView2.frame.maxY
+        playerResultView3.frame.size.width = containerView.frame.width
+        playerResultView3.frame.size.height = height
         
-        moneyLabel1.frame.origin.x = nameLabel1.frame.maxX
-        moneyLabel1.frame.origin.y = nameLabel1.frame.midY - moneyLabel1.frame.height / 2
-        
-        moneyLabel2.frame.origin.x = nameLabel2.frame.maxX
-        moneyLabel2.frame.origin.y = nameLabel2.frame.midY - moneyLabel2.frame.height / 2
-        
-        moneyLabel3.frame.origin.x = nameLabel3.frame.maxX
-        moneyLabel3.frame.origin.y = nameLabel3.frame.midY - moneyLabel3.frame.height / 2
-        
-        moneyLabel4.frame.origin.x = nameLabel4.frame.maxX
-        moneyLabel4.frame.origin.y = nameLabel4.frame.midY - moneyLabel4.frame.height / 2
-        
-        maxWinTimesLabel.frame.origin.x = centerX - maxWinTimesLabel.frame.width / 2
-        maxWinTimesLabel.frame.origin.y = nameLabel4.frame.maxY + connectSpace
-        
-        maxContinuousWinTimesLabel.frame.origin.x = centerX - maxContinuousWinTimesLabel.frame.width / 2
-        maxContinuousWinTimesLabel.frame.origin.y = maxWinTimesLabel.frame.maxY + labelSpace2
-        
-        maxFireTimesLabel.frame.origin.x = centerX - maxFireTimesLabel.frame.width / 2
-        maxFireTimesLabel.frame.origin.y = maxContinuousWinTimesLabel.frame.maxY + labelSpace2
+        playerResultView4.frame.origin.x = 0
+        playerResultView4.frame.origin.y = playerResultView3.frame.maxY
+        playerResultView4.frame.size.width = containerView.frame.width
+        playerResultView4.frame.size.height = height
     }
     
-    func generateMaxWinTimesString() -> String {
-        var maxTimes: Int = 0
-        var maxPlayers: [Player] = []
-        let players = [game.player1, game.player2, game.player3, game.player4]
-        for player in players {
-            if player.winTimes > maxTimes {
-                maxTimes = player.winTimes
-                maxPlayers = [player]
-            } else if player.winTimes == maxTimes {
-                maxPlayers.append(player)
-            }
-        }
-        var string = "胡牌最多 \(maxTimes)次: "
-        for (index, player) in maxPlayers.enumerated() {
-            if index > 0 {
-                string += "/"
-            }
-            string += player.name
-        }
-        return string
-    }
-    
-    func generateMaxContinuousWinTimesString() -> String {
-        var maxTimes: Int = 0
-        var maxPlayers: [Player] = []
-        let players = [game.player1, game.player2, game.player3, game.player4]
-        for player in players {
-            if player.maxContinuousWinTimes > maxTimes {
-                maxTimes = player.maxContinuousWinTimes
-                maxPlayers = [player]
-            } else if player.maxContinuousWinTimes == maxTimes {
-                maxPlayers.append(player)
-            }
-        }
-        var string = "连胡最多 \(maxTimes)次: "
-        for (index, player) in maxPlayers.enumerated() {
-            if index > 0 {
-                string += "/"
-            }
-            string += player.name
-        }
-        return string
-    }
-    
-    func generateFireTimesLabelString() -> String {
-        var maxTimes: Int = 0
-        var maxPlayers: [Player] = []
-        let players = [game.player1, game.player2, game.player3, game.player4]
-        for player in players {
-            if player.fireTimes > maxTimes {
-                maxTimes = player.fireTimes
-                maxPlayers = [player]
-            } else if player.fireTimes == maxTimes {
-                maxPlayers.append(player)
-            }
-        }
-        var string = "点炮最多 \(maxTimes)次: "
-        for (index, player) in maxPlayers.enumerated() {
-            if index > 0 {
-                string += "/"
-            }
-            string += player.name
-        }
-        return string
-    }
-    
-    func generateResultImage() -> UIImage? {
-        UIGraphicsBeginImageContext(view.frame.size)
-        defer {
-            UIGraphicsEndImageContext()
-        }
-        view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        let x = nameLabel1.frame.maxX - 100
-        let y = nameLabel1.frame.minY - 10
-        let w = CGFloat(220)
-        let h = maxFireTimesLabel.frame.maxY - nameLabel1.frame.minY + 20
-        let rect = CGRect(x: x, y: y, width: w, height: h)
-        return image?.cropping(to: rect)
-    }
-    
-    @objc func actionButtonClicked() {
+    @objc private func actionButtonClicked() {
         guard let image = generateResultImage() else {
             return
         }
@@ -257,7 +113,62 @@ class ResultViewController: BaseViewController {
         present(avc, animated: true, completion: nil)
     }
     
-    @objc func doneButtonClicked() {
+    @objc private func doneButtonClicked() {
         navigationController?.popToRootViewController(animated: true)
+    }
+    
+    private func updateBestData() {
+        // calculate best data
+        let players = [game.player1, game.player2, game.player3, game.player4]
+        var maxPoint: Int = 0
+        var maxOwnDrawTimes: Int = 0
+        var maxFireTimes: Int = 0
+        var maxPointIndices: [Int] = []
+        var maxOwnDrawTimesIndices: [Int] = []
+        var maxFireTimesIndices: [Int] = []
+        for (index, player) in players.enumerated() {
+            // update point
+            if player.point > maxPoint {
+                maxPoint = player.point
+                maxPointIndices = [index]
+            } else if player.point == maxPoint && maxPoint > 0 {
+                maxPointIndices.append(index)
+            }
+            // update own draw times
+            if player.ownDrawTimes > maxOwnDrawTimes {
+                maxOwnDrawTimes = player.ownDrawTimes
+                maxOwnDrawTimesIndices = [index]
+            } else if player.ownDrawTimes == maxOwnDrawTimes && maxOwnDrawTimes > 0 {
+                maxOwnDrawTimesIndices.append(index)
+            }
+            // update fire times
+            if player.fireTimes > maxFireTimes {
+                maxFireTimes = player.fireTimes
+                maxFireTimesIndices = [index]
+            } else if player.fireTimes == maxFireTimes && maxFireTimes > 0 {
+                maxFireTimesIndices.append(index)
+            }
+        }
+        // update UI by best data
+        let views: [PlayerResultView] = [playerResultView1, playerResultView2, playerResultView3, playerResultView4]
+        for index in maxPointIndices {
+            views[index].isBestMoney = true
+        }
+        for index in maxOwnDrawTimesIndices {
+            views[index].isBestDrawer = true
+        }
+        for index in maxFireTimesIndices {
+            views[index].isBestFirer = true
+        }
+    }
+    
+    private func generateResultImage() -> UIImage? {
+//        UIGraphicsBeginImageContext(containerView.frame.size)
+        UIGraphicsBeginImageContextWithOptions(containerView.frame.size, true, 0)
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        containerView.drawHierarchy(in: containerView.bounds, afterScreenUpdates: true)
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }

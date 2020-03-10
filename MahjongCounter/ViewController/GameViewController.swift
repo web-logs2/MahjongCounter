@@ -190,12 +190,12 @@ class GameViewController: BaseViewController {
         guard let winner = currentRoundWinner else {
             return
         }
-        // update point for player
+        // update point
         for (player, point) in currentRoundLoserPointInfo {
             player.point -= point
             winner.point += point
         }
-        // update times and continuous for player
+        // update win times
         if currentRoundLoserPointInfo.count == 3 {
             winner.winTimes += 1
             winner.continuousWinTimes += 1
@@ -203,8 +203,12 @@ class GameViewController: BaseViewController {
                 player.continuousWinTimes = 0
             }
         }
-        // update fires for player
-        currentRoundFirer?.fireTimes += 1
+        // update own draw or fire times
+        if let firer = currentRoundFirer {
+            firer.fireTimes += 1
+        } else {
+            winner.ownDrawTimes += 1
+        }
         // save game data
         Game.saveGame(game)
     }
@@ -220,6 +224,11 @@ class GameViewController: BaseViewController {
         player2InfoView.continuousWinTimes = game.player2.continuousWinTimes
         player3InfoView.continuousWinTimes = game.player3.continuousWinTimes
         player4InfoView.continuousWinTimes = game.player4.continuousWinTimes
+        // update UI for own draw times
+        player1InfoView.ownDrawTimes = game.player1.ownDrawTimes
+        player2InfoView.ownDrawTimes = game.player2.ownDrawTimes
+        player3InfoView.ownDrawTimes = game.player3.ownDrawTimes
+        player4InfoView.ownDrawTimes = game.player4.ownDrawTimes
         // update UI for fire times
         player1InfoView.fireTimes = game.player1.fireTimes
         player2InfoView.fireTimes = game.player2.fireTimes
@@ -232,7 +241,7 @@ class GameViewController: BaseViewController {
         player4InfoView.point = game.player4.point
     }
     
-    func updatePlayerInfoViewsPointButtonSelection(_ selectedPlayerInfoView: PlayerInfoView) {
+    func updatePlayerInfoViewsPointButtonSelection(_ selectedPlayerInfoView: PlayerInfoView?) {
         if selectedPlayerInfoView != player1InfoView {
             player1InfoView.clearPointButtonSelection()
         }
@@ -247,7 +256,22 @@ class GameViewController: BaseViewController {
         } 
     }
     
-    func updatePlayerInfoViewsFireButtonSelection(_ selectedPlayerInfoView: PlayerInfoView) {
+    func updatePlayerInfoViewsOwnDrawButtonSelection(_ selectedPlayerInfoView: PlayerInfoView?) {
+        if selectedPlayerInfoView != player1InfoView {
+            player1InfoView.clearOwnDrawButtonSelection()
+        }
+        if selectedPlayerInfoView != player2InfoView {
+            player2InfoView.clearOwnDrawButtonSelection()
+        }
+        if selectedPlayerInfoView != player3InfoView {
+            player3InfoView.clearOwnDrawButtonSelection()
+        }
+        if selectedPlayerInfoView != player4InfoView {
+            player4InfoView.clearOwnDrawButtonSelection()
+        } 
+    }
+    
+    func updatePlayerInfoViewsFireButtonSelection(_ selectedPlayerInfoView: PlayerInfoView?) {
         if selectedPlayerInfoView != player1InfoView {
             player1InfoView.clearFireButtonSelection()
         }
@@ -289,13 +313,17 @@ extension GameViewController: PlayerInfoViewDelegate {
         checkPointButtonSelection {
             self.updatePlayerData()
             self.updatePlayerInfoViewsData()
-            self.updatePlayerInfoViewsPointButtonSelection(playerInfoView)
+            self.updatePlayerInfoViewsOwnDrawButtonSelection(nil)
+            self.updatePlayerInfoViewsFireButtonSelection(nil)
+            self.updatePlayerInfoViewsPointButtonSelection(nil)
             self.updatePlayerInfoViewsUIStatus()
         }
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, cancelButtonDidClick button: UIButton) {
-        updatePlayerInfoViewsPointButtonSelection(playerInfoView)
+        updatePlayerInfoViewsOwnDrawButtonSelection(nil)
+        updatePlayerInfoViewsFireButtonSelection(nil)
+        updatePlayerInfoViewsPointButtonSelection(nil)
         updatePlayerInfoViewsUIStatus()
     }
     
@@ -313,7 +341,14 @@ extension GameViewController: PlayerInfoViewDelegate {
         }
     }
     
+    func playerInfoView(_ playerInfoView: PlayerInfoView, ownDrawButtonDidClick button: UIButton) {
+        updatePlayerInfoViewsOwnDrawButtonSelection(playerInfoView)
+        updatePlayerInfoViewsFireButtonSelection(playerInfoView)
+        currentRoundFirer = nil
+    }
+    
     func playerInfoView(_ playerInfoView: PlayerInfoView, fireButtonDidClick button: UIButton) {
+        updatePlayerInfoViewsOwnDrawButtonSelection(playerInfoView)
         updatePlayerInfoViewsFireButtonSelection(playerInfoView)
         currentRoundFirer = playerForPlayerInfoView(playerInfoView)
     }

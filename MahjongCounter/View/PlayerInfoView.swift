@@ -13,6 +13,7 @@ protocol PlayerInfoViewDelegate: AnyObject {
     func playerInfoView(_ playerInfoView: PlayerInfoView, doneButtonDidClick button: UIButton)
     func playerInfoView(_ playerInfoView: PlayerInfoView, cancelButtonDidClick button: UIButton)
     func playerInfoView(_ playerInfoView: PlayerInfoView, pointButtonDidClick button: UIButton)
+    func playerInfoView(_ playerInfoView: PlayerInfoView, ownDrawButtonDidClick button: UIButton)
     func playerInfoView(_ playerInfoView: PlayerInfoView, fireButtonDidClick button: UIButton)
 }
 
@@ -21,12 +22,14 @@ class PlayerInfoView: UIView {
     private var nameLabel: UILabel!
     private var winTimesLabel: UILabel!
     private var continuousWinTimesLabel: UILabel!
+    private var ownDrawTimesLabel: UILabel!
     private var fireTimesLabel: UILabel!
     private var pointLabel: UILabel!
     
     private var doneButton: UIButton!
     private var cancelButton: UIButton!
     
+    private var ownDrawButton: UIButton!
     private var fireButton: UIButton!
     
     private var pointButton1: UIButton!
@@ -49,6 +52,12 @@ class PlayerInfoView: UIView {
     var continuousWinTimes: Int = 0 {
         didSet {
             updateContinuousWinTimes()
+        }
+    }
+    
+    var ownDrawTimes: Int = 0 {
+        didSet {
+            updateOwnDrawTimes()
         }
     }
     
@@ -84,6 +93,11 @@ class PlayerInfoView: UIView {
         continuousWinTimesLabel.textColor = UIColor.black
         addSubview(continuousWinTimesLabel)
         
+        ownDrawTimesLabel = UILabel()
+        ownDrawTimesLabel.font = UIFont.systemFont(ofSize: 20)
+        ownDrawTimesLabel.textColor = UIColor.black
+        addSubview(ownDrawTimesLabel)
+        
         fireTimesLabel = UILabel()
         fireTimesLabel.font = UIFont.systemFont(ofSize: 20)
         fireTimesLabel.textColor = UIColor.black
@@ -116,6 +130,19 @@ class PlayerInfoView: UIView {
         cancelButton.setTitle("✗", for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
         addSubview(cancelButton)
+        
+        ownDrawButton = UIButton()
+        ownDrawButton.frame.size = buttonSize
+        ownDrawButton.layer.cornerRadius = ownDrawButton.frame.width / 2
+        ownDrawButton.layer.masksToBounds = true
+        ownDrawButton.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        ownDrawButton.setBackgroundImage(UIImage(color: .red), for: .normal)
+        ownDrawButton.setBackgroundImage(UIImage(color: .white), for: .selected)
+        ownDrawButton.setTitleColor(.white, for: .normal)
+        ownDrawButton.setTitleColor(.red, for: .selected)
+        ownDrawButton.setTitle("摸", for: .normal)
+        ownDrawButton.addTarget(self, action: #selector(ownDrawButtonClicked), for: .touchUpInside)
+        addSubview(ownDrawButton)
         
         fireButton = UIButton()
         fireButton.frame.size = buttonSize
@@ -210,6 +237,7 @@ class PlayerInfoView: UIView {
         
         doneButton.isHidden = true
         cancelButton.isHidden = true
+        ownDrawButton.isHidden = true
         fireButton.isHidden = true
         pointButton1.isHidden = true
         pointButton2.isHidden = true
@@ -227,7 +255,7 @@ class PlayerInfoView: UIView {
         super.layoutSubviews()
         
         let space = CGFloat(10)
-        let height1 = winTimesLabel.frame.height * 2 + space
+        let height1 = winTimesLabel.frame.height * 3 + space * 2
         let height2 = pointButton1.frame.height * 2 + space
         
         nameLabel.frame.origin.x = layoutMargins.left
@@ -239,8 +267,11 @@ class PlayerInfoView: UIView {
         continuousWinTimesLabel.frame.origin.x = winTimesLabel.frame.maxX + 10
         continuousWinTimesLabel.frame.origin.y = winTimesLabel.frame.midY - continuousWinTimesLabel.frame.height / 2
         
+        ownDrawTimesLabel.frame.origin.x = winTimesLabel.frame.minX
+        ownDrawTimesLabel.frame.origin.y = winTimesLabel.frame.maxY + space
+        
         fireTimesLabel.frame.origin.x = winTimesLabel.frame.minX
-        fireTimesLabel.frame.origin.y = winTimesLabel.frame.maxY + space
+        fireTimesLabel.frame.origin.y = ownDrawTimesLabel.frame.maxY + space
         
         pointLabel.frame.origin.x = frame.width - layoutMargins.right - pointLabel.frame.width
         pointLabel.frame.origin.y = (frame.height - pointLabel.frame.height) / 2
@@ -250,6 +281,9 @@ class PlayerInfoView: UIView {
         
         doneButton.frame.origin.x = cancelButton.frame.minX - space - doneButton.frame.width
         doneButton.frame.origin.y = (frame.height - doneButton.frame.height) / 2
+        
+        ownDrawButton.frame.origin.x = nameLabel.frame.maxX + 20
+        ownDrawButton.frame.origin.y = (frame.height - ownDrawButton.frame.height) / 2
         
         fireButton.frame.origin.x = nameLabel.frame.maxX + 20
         fireButton.frame.origin.y = (frame.height - fireButton.frame.height) / 2
@@ -277,10 +311,12 @@ class PlayerInfoView: UIView {
         locked = true
         winTimesLabel.isHidden = true
         continuousWinTimesLabel.isHidden = true
+        ownDrawTimesLabel.isHidden = true
         fireTimesLabel.isHidden = true
         pointLabel.isHidden = true
         doneButton.isHidden = false
         cancelButton.isHidden = false
+        ownDrawButton.isHidden = false
         fireButton.isHidden = true
         pointButton1.isHidden = true
         pointButton2.isHidden = true
@@ -294,10 +330,12 @@ class PlayerInfoView: UIView {
         locked = true
         winTimesLabel.isHidden = true
         continuousWinTimesLabel.isHidden = true
+        ownDrawTimesLabel.isHidden = true
         fireTimesLabel.isHidden = true
         pointLabel.isHidden = true
         doneButton.isHidden = true
         cancelButton.isHidden = true
+        ownDrawButton.isHidden = true
         fireButton.isHidden = false
         pointButton1.isHidden = false
         pointButton2.isHidden = false
@@ -311,10 +349,12 @@ class PlayerInfoView: UIView {
         locked = false
         winTimesLabel.isHidden = false
         continuousWinTimesLabel.isHidden = false
+        ownDrawTimesLabel.isHidden = false
         fireTimesLabel.isHidden = false
         pointLabel.isHidden = false
         doneButton.isHidden = true
         cancelButton.isHidden = true
+        ownDrawButton.isHidden = true
         fireButton.isHidden = true
         pointButton1.isHidden = true
         pointButton2.isHidden = true
@@ -322,6 +362,10 @@ class PlayerInfoView: UIView {
         pointButton4.isHidden = true
         pointButton5.isHidden = true
         pointButton6.isHidden = true
+    }
+    
+    func clearOwnDrawButtonSelection() {
+        ownDrawButton.isSelected = false
     }
     
     func clearFireButtonSelection() {
@@ -341,6 +385,12 @@ class PlayerInfoView: UIView {
     private func updateContinuousWinTimes() {
         continuousWinTimesLabel.text = continuousWinTimes.continuousWinTimesString
         continuousWinTimesLabel.sizeToFit()
+        setNeedsLayout()
+    }
+    
+    private func updateOwnDrawTimes() {
+        ownDrawTimesLabel.text = ownDrawTimes.ownDrawTimesString
+        ownDrawTimesLabel.sizeToFit()
         setNeedsLayout()
     }
     
@@ -371,6 +421,14 @@ class PlayerInfoView: UIView {
     
     @objc private func cancelButtonClicked() {
         delegate?.playerInfoView(self, cancelButtonDidClick: cancelButton)
+    }
+    
+    @objc private func ownDrawButtonClicked() {
+        if ownDrawButton.isSelected {
+            return
+        }
+        ownDrawButton.isSelected = true
+        delegate?.playerInfoView(self, ownDrawButtonDidClick: ownDrawButton)
     }
     
     @objc private func fireButtonClicked() {
@@ -443,6 +501,14 @@ extension Int {
             return "连胡: \(self)"
         }
         return ""
+    }
+    
+    var maxContinuousWinTimesString: String {
+        return "最多连胡: \(self)"
+    }
+    
+    var ownDrawTimesString: String {
+        return "自摸: \(self)"
     }
     
     var fireTimesString: String {
