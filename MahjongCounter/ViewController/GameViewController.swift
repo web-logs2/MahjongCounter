@@ -35,8 +35,6 @@ class GameViewController: BaseViewController {
         return false
     }
     
-    var didFinishHandler: (() -> Void)?
-    
     init(game: Game) {
         super.init(nibName: nil, bundle: nil)
         self.game = game
@@ -161,12 +159,14 @@ class GameViewController: BaseViewController {
     }
     
     func endGame() {
-        didFinishHandler?()
+        game.isPlaying = false
+        GameStore.updateGame(game)
         pushResultViewController()
     }
     
     func pushResultViewController() {
         let vc = ResultViewController(game: game)
+        vc.useCustomBackButton = true
         navigationController?.pushViewController(vc, animated: true)
     } 
     
@@ -210,7 +210,7 @@ class GameViewController: BaseViewController {
             winner.ownDrawTimes += 1
         }
         // save game data
-        Game.saveGame(game)
+        GameStore.updateGame(game)
     }
     
     func updatePlayerInfoViewsData() {

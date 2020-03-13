@@ -21,9 +21,6 @@ extension UIColor {
     
     private static var colors = generateColors()
     
-    static let darkGreen = UIColor(red: 20/255.0, green: 146/255.0, blue: 101/255.0, alpha: 1)
-    static let lightGreen = UIColor(red: 38/255.0, green: 212/255.0, blue: 73/255.0, alpha: 1)
-    
     static func random() -> UIColor {
         if let color = colors.randomElement() {
             if let index = colors.firstIndex(of: color) {
@@ -36,6 +33,8 @@ extension UIColor {
         }
         fatalError("Can not generate a random color")
     }
+    
+    static let lightGreen = UIColor(red: 38/255.0, green: 212/255.0, blue: 73/255.0, alpha: 1)
 }
 
 extension UIImage {

@@ -18,6 +18,8 @@ class ResultViewController: BaseViewController {
     
     private var game: Game!
     
+    var useCustomBackButton: Bool = false
+    
     init(game: Game) {
         super.init(nibName: nil, bundle: nil)
         self.game = game
@@ -31,8 +33,10 @@ class ResultViewController: BaseViewController {
         super.viewDidLoad()
         
         navigationItem.title = "统计"
-        navigationItem.leftBarButtonItem = UIBarButtonItem.action(target: self, action: #selector(actionButtonClicked))
-        navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(doneButtonClicked))
+        if useCustomBackButton {
+            navigationItem.leftBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(doneButtonClicked))
+        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem.action(target: self, action: #selector(actionButtonClicked))
         
         containerView = UIView()
         view.addSubview(containerView)
