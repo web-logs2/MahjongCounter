@@ -292,32 +292,24 @@ class GameViewController: BaseViewController {
         player3InfoView.resetUI()
         player4InfoView.resetUI()
     }
-    
-    func checkPointButtonSelection(continueAction: @escaping () -> Void) {
-        if currentRoundLoserPointInfo.count < 3 {
-            let ac = UIAlertController(title: "还有玩家未选择点数", message: nil, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-            ac.addAction(UIAlertAction(title: "继续", style: .default, handler: { _ in
-                continueAction()
-            }))
-            present(ac, animated: true, completion: nil)
-        } else {
-            continueAction()
-        }
-    }
 }
 
 extension GameViewController: PlayerInfoViewDelegate {
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, doneButtonDidClick button: UIButton) {
-        checkPointButtonSelection {
-            self.updatePlayerData()
-            self.updatePlayerInfoViewsData()
-            self.updatePlayerInfoViewsOwnDrawButtonSelection(nil)
-            self.updatePlayerInfoViewsFireButtonSelection(nil)
-            self.updatePlayerInfoViewsPointButtonSelection(nil)
-            self.updatePlayerInfoViewsUIStatus()
+        // check point update
+        if currentRoundLoserPointInfo.count < 3 {
+            let ac = UIAlertController(title: "还有玩家未选择点数", message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "知道了", style: .cancel, handler: nil))
+            present(ac, animated: true, completion: nil)
+            return
         }
+        updatePlayerData()
+        updatePlayerInfoViewsData()
+        updatePlayerInfoViewsOwnDrawButtonSelection(nil)
+        updatePlayerInfoViewsFireButtonSelection(nil)
+        updatePlayerInfoViewsPointButtonSelection(nil)
+        updatePlayerInfoViewsUIStatus()
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, cancelButtonDidClick button: UIButton) {
