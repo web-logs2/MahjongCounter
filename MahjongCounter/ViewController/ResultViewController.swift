@@ -167,7 +167,6 @@ class ResultViewController: BaseViewController {
     }
     
     private func generateResultImage() -> UIImage? {
-//        UIGraphicsBeginImageContext(containerView.frame.size)
         UIGraphicsBeginImageContextWithOptions(containerView.frame.size, true, 0)
         defer {
             UIGraphicsEndImageContext()

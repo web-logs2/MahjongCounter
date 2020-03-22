@@ -15,10 +15,7 @@ protocol GameStoreObservering: AnyObject {
 
 class GameStore {
     
-    private static var observers: NSHashTable<AnyObject> = {
-        let table = NSHashTable<AnyObject>(options: .weakMemory)
-        return table
-    }()
+    private static var observers = NSHashTable<AnyObject>(options: .weakMemory)
     
     static func addObserver(_ observer: GameStoreObservering) {
         observers.add(observer)
