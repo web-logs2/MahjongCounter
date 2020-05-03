@@ -477,10 +477,10 @@ extension Int {
     
     var pointColor: UIColor {
         if self < 0 {
-            return .red
+            return .lightGreen
         }
         if self > 0 {
-            return .lightGreen
+            return .red
         }
         return .black
     }

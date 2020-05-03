@@ -14,19 +14,7 @@ class Player: Codable {
     var point: Int = 0
     
     var winTimes: Int = 0 
-    
-    var continuousWinTimes: Int = 0 {
-        didSet {
-            if continuousWinTimes > maxContinuousWinTimes {
-                maxContinuousWinTimes = continuousWinTimes
-            }
-        }
-    }
-    
-    private(set) var maxContinuousWinTimes: Int = 0
-    
     var ownDrawTimes: Int = 0
-    
     var fireTimes: Int = 0
     
     init(name: String) {

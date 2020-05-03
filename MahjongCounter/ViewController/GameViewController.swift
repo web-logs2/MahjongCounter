@@ -16,9 +16,7 @@ class GameViewController: BaseViewController {
     private var player4InfoView: PlayerInfoView!
     
     private var game: Game!
-    private var currentRoundWinner: Player?
-    private var currentRoundFirer: Player?
-    private var currentRoundLoserPointInfo: [Player: Int] = [:]
+    private var currentRound: Round?
     private var locked: Bool {
         if player1InfoView.locked {
             return true
@@ -98,9 +96,9 @@ class GameViewController: BaseViewController {
         if player1InfoView.locked {
             return
         }
-        currentRoundWinner = game.player1
-        currentRoundFirer = nil
-        currentRoundLoserPointInfo = [:]
+        let round = Round()
+        round.winner = game.player1
+        currentRound = round
         player1InfoView.setWinUI()
         player2InfoView.setLoseUI()
         player3InfoView.setLoseUI()
@@ -111,9 +109,9 @@ class GameViewController: BaseViewController {
         if player2InfoView.locked {
             return
         }
-        currentRoundWinner = game.player2
-        currentRoundFirer = nil
-        currentRoundLoserPointInfo = [:]
+        let round = Round()
+        round.winner = game.player2
+        currentRound = round
         player2InfoView.setWinUI()
         player1InfoView.setLoseUI()
         player3InfoView.setLoseUI()
@@ -124,9 +122,9 @@ class GameViewController: BaseViewController {
         if player3InfoView.locked {
             return
         }
-        currentRoundWinner = game.player3
-        currentRoundFirer = nil
-        currentRoundLoserPointInfo = [:]
+        let round = Round()
+        round.winner = game.player3
+        currentRound = round
         player3InfoView.setWinUI()
         player1InfoView.setLoseUI()
         player2InfoView.setLoseUI()
@@ -137,9 +135,9 @@ class GameViewController: BaseViewController {
         if player4InfoView.locked {
             return
         }
-        currentRoundWinner = game.player4
-        currentRoundFirer = nil
-        currentRoundLoserPointInfo = [:]
+        let round = Round()
+        round.winner = game.player4
+        currentRound = round
         player4InfoView.setWinUI()
         player1InfoView.setLoseUI()
         player2InfoView.setLoseUI()
@@ -186,29 +184,44 @@ class GameViewController: BaseViewController {
         return nil
     }
     
-    func updatePlayerData() {
-        guard let winner = currentRoundWinner else {
-            return
-        }
+    func updatePlayerData(round: Round) {
+        guard let winner = round.winner else { return }
         // update point
-        for (player, point) in currentRoundLoserPointInfo {
+        for (player, point) in round.loserPointInfo {
             player.point -= point
             winner.point += point
         }
         // update win times
-        if currentRoundLoserPointInfo.count == 3 {
-            winner.winTimes += 1
-            winner.continuousWinTimes += 1
-            for player in currentRoundLoserPointInfo.keys {
-                player.continuousWinTimes = 0
-            }
-        }
+        winner.winTimes += 1
         // update own draw or fire times
-        if let firer = currentRoundFirer {
+        if let firer = round.firer {
             firer.fireTimes += 1
         } else {
             winner.ownDrawTimes += 1
         }
+        // update rounds
+        game.rounds.insert(round, at: 0)
+        // save game data
+        GameStore.updateGame(game)
+    }
+    
+    func revertPlayerData(round: Round) {
+        guard let winner = round.winner else { return }
+        // update point
+        for (player, point) in round.loserPointInfo {
+            player.point += point
+            winner.point -= point
+        }
+        // update win times
+        winner.winTimes -= 1
+        // update own draw or fire times
+        if let firer = round.firer {
+            firer.fireTimes -= 1
+        } else {
+            winner.ownDrawTimes -= 1
+        }
+        // update rounds
+        game.rounds.remove(at: 0)
         // save game data
         GameStore.updateGame(game)
     }
@@ -220,10 +233,11 @@ class GameViewController: BaseViewController {
         player3InfoView.winTimes = game.player3.winTimes
         player4InfoView.winTimes = game.player4.winTimes
         // update UI for continuous win times
-        player1InfoView.continuousWinTimes = game.player1.continuousWinTimes
-        player2InfoView.continuousWinTimes = game.player2.continuousWinTimes
-        player3InfoView.continuousWinTimes = game.player3.continuousWinTimes
-        player4InfoView.continuousWinTimes = game.player4.continuousWinTimes
+        let continuousWinTimes = calculateContinuousWinTimes()
+        player1InfoView.continuousWinTimes = continuousWinTimes[0]
+        player2InfoView.continuousWinTimes = continuousWinTimes[1]
+        player3InfoView.continuousWinTimes = continuousWinTimes[2]
+        player4InfoView.continuousWinTimes = continuousWinTimes[3]
         // update UI for own draw times
         player1InfoView.ownDrawTimes = game.player1.ownDrawTimes
         player2InfoView.ownDrawTimes = game.player2.ownDrawTimes
@@ -239,6 +253,21 @@ class GameViewController: BaseViewController {
         player2InfoView.point = game.player2.point
         player3InfoView.point = game.player3.point
         player4InfoView.point = game.player4.point
+    }
+    
+    func calculateContinuousWinTimes() -> [Int] {
+        var times: [Int] = Array<Int>(repeating: 0, count: 4)
+        guard let winner = game.rounds.first?.winner else { return times }
+        let players: [Player] = [game.player1, game.player2, game.player3, game.player4]
+        guard let index = players.firstIndex(of: winner) else { return times }
+        for round in game.rounds {
+            if round.winner == winner {
+                times[index] += 1
+            } else {
+                break
+            }
+        }
+        return times
     }
     
     func updatePlayerInfoViewsPointButtonSelection(_ selectedPlayerInfoView: PlayerInfoView?) {
@@ -297,14 +326,15 @@ class GameViewController: BaseViewController {
 extension GameViewController: PlayerInfoViewDelegate {
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, doneButtonDidClick button: UIButton) {
+        guard let round = currentRound else { return }
         // check point update
-        if currentRoundLoserPointInfo.count < 3 {
+        if round.loserPointInfo.count < 3 {
             let ac = UIAlertController(title: "还有玩家未选择点数", message: nil, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "知道了", style: .cancel, handler: nil))
             present(ac, animated: true, completion: nil)
             return
         }
-        updatePlayerData()
+        updatePlayerData(round: round)
         updatePlayerInfoViewsData()
         updatePlayerInfoViewsOwnDrawButtonSelection(nil)
         updatePlayerInfoViewsFireButtonSelection(nil)
@@ -320,28 +350,47 @@ extension GameViewController: PlayerInfoViewDelegate {
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, pointButtonDidClick button: UIButton) {
-        guard let player = playerForPlayerInfoView(playerInfoView) else {
-            return
-        }
-        guard let title = button.title(for: .normal), let point = Int(title) else {
-            return
-        }
+        guard let round = currentRound else { return }
+        guard let player = playerForPlayerInfoView(playerInfoView) else { return }
+        guard let title = button.title(for: .normal), let point = Int(title) else { return }
         if button.isSelected {
-            currentRoundLoserPointInfo[player] = point
+            round.loserPointInfo[player] = point
         } else {
-            currentRoundLoserPointInfo[player] = nil
+            round.loserPointInfo[player] = nil
         }
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, ownDrawButtonDidClick button: UIButton) {
+        guard let round = currentRound else { return }
         updatePlayerInfoViewsOwnDrawButtonSelection(playerInfoView)
         updatePlayerInfoViewsFireButtonSelection(playerInfoView)
-        currentRoundFirer = nil
+        round.firer = nil
     }
     
     func playerInfoView(_ playerInfoView: PlayerInfoView, fireButtonDidClick button: UIButton) {
+        guard let round = currentRound else { return }
         updatePlayerInfoViewsOwnDrawButtonSelection(playerInfoView)
         updatePlayerInfoViewsFireButtonSelection(playerInfoView)
-        currentRoundFirer = playerForPlayerInfoView(playerInfoView)
+        round.firer = playerForPlayerInfoView(playerInfoView)
+    }
+}
+
+extension GameViewController {
+    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        guard motion == .motionShake else { return }
+        if let round = game.rounds.first {
+            let ac = UIAlertController(title: "是否撤销上次操作", message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+            ac.addAction(UIAlertAction(title: "撤销", style: .destructive, handler: { _ in
+                self.revertPlayerData(round: round)
+                self.updatePlayerInfoViewsData()
+            }))
+            present(ac, animated: true, completion: nil)
+        } else {
+            let ac = UIAlertController(title: "暂无需要撤销的操作", message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "知道了", style: .cancel, handler: nil))
+            present(ac, animated: true, completion: nil)
+        }
     }
 }

@@ -24,6 +24,7 @@
 		561A35352404EA79002BC5B0 /* UIKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A35342404EA79002BC5B0 /* UIKitExtension.swift */; };
 		56976954241B59CF00E3B974 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56976953241B59CF00E3B974 /* GameTableViewCell.swift */; };
 		56976956241B91C600E3B974 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56976955241B91C600E3B974 /* DateFormatter.swift */; };
+		56CD4AC9245E6D40002696BB /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CD4AC8245E6D40002696BB /* Round.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		561A35342404EA79002BC5B0 /* UIKitExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtension.swift; sourceTree = "<group>"; };
 		56976953241B59CF00E3B974 /* GameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTableViewCell.swift; sourceTree = "<group>"; };
 		56976955241B91C600E3B974 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		56CD4AC8245E6D40002696BB /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				561A351B240407AB002BC5B0 /* Game.swift */,
+				56CD4AC8245E6D40002696BB /* Round.swift */,
 				561A351D240407CF002BC5B0 /* Player.swift */,
 				561A352124040854002BC5B0 /* Settings.swift */,
 			);
@@ -224,6 +227,7 @@
 				561245422417352D00C0294C /* PlayerResultView.swift in Sources */,
 				561A352224040854002BC5B0 /* Settings.swift in Sources */,
 				561A351C240407AB002BC5B0 /* Game.swift in Sources */,
+				56CD4AC9245E6D40002696BB /* Round.swift in Sources */,
 				561A35302404C43F002BC5B0 /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

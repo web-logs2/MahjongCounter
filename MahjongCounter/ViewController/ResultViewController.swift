@@ -44,7 +44,6 @@ class ResultViewController: BaseViewController {
         playerResultView1 = PlayerResultView(name: game.player1.name)
         playerResultView1.backgroundColor = Settings.shared.player1Color
         playerResultView1.winTimes = game.player1.winTimes
-        playerResultView1.maxContinuousWinTimes = game.player1.maxContinuousWinTimes
         playerResultView1.ownDrawTimes = game.player1.ownDrawTimes
         playerResultView1.fireTimes = game.player1.fireTimes
         playerResultView1.money = game.player1.point * Settings.shared.moneyPerPoint
@@ -53,7 +52,6 @@ class ResultViewController: BaseViewController {
         playerResultView2 = PlayerResultView(name: game.player2.name)
         playerResultView2.backgroundColor = Settings.shared.player2Color
         playerResultView2.winTimes = game.player2.winTimes
-        playerResultView2.maxContinuousWinTimes = game.player2.maxContinuousWinTimes
         playerResultView2.ownDrawTimes = game.player2.ownDrawTimes
         playerResultView2.fireTimes = game.player2.fireTimes
         playerResultView2.money = game.player2.point * Settings.shared.moneyPerPoint
@@ -62,7 +60,6 @@ class ResultViewController: BaseViewController {
         playerResultView3 = PlayerResultView(name: game.player3.name)
         playerResultView3.backgroundColor = Settings.shared.player3Color
         playerResultView3.winTimes = game.player3.winTimes
-        playerResultView3.maxContinuousWinTimes = game.player3.maxContinuousWinTimes
         playerResultView3.ownDrawTimes = game.player3.ownDrawTimes
         playerResultView3.fireTimes = game.player3.fireTimes
         playerResultView3.money = game.player3.point * Settings.shared.moneyPerPoint
@@ -71,12 +68,12 @@ class ResultViewController: BaseViewController {
         playerResultView4 = PlayerResultView(name: game.player4.name)
         playerResultView4.backgroundColor = Settings.shared.player4Color
         playerResultView4.winTimes = game.player4.winTimes
-        playerResultView4.maxContinuousWinTimes = game.player4.maxContinuousWinTimes
         playerResultView4.ownDrawTimes = game.player4.ownDrawTimes
         playerResultView4.fireTimes = game.player4.fireTimes
         playerResultView4.money = game.player4.point * Settings.shared.moneyPerPoint
         containerView.addSubview(playerResultView4)
         
+        updateMaxContinuousWinTimes()
         updateBestData()
     }
     
@@ -119,6 +116,56 @@ class ResultViewController: BaseViewController {
     
     @objc private func doneButtonClicked() {
         navigationController?.popToRootViewController(animated: true)
+    }
+    
+    private func updateMaxContinuousWinTimes() {
+        var maxContinuousWinTimes1: Int = 0
+        var maxContinuousWinTimes2: Int = 0
+        var maxContinuousWinTimes3: Int = 0
+        var maxContinuousWinTimes4: Int = 0
+        var currentContinuousWinTimes1: Int = 0
+        var currentContinuousWinTimes2: Int = 0
+        var currentContinuousWinTimes3: Int = 0
+        var currentContinuousWinTimes4: Int = 0
+        for round in game.rounds {
+            if round.winner == game.player1 {
+                currentContinuousWinTimes1 += 1
+                currentContinuousWinTimes2 = 0
+                currentContinuousWinTimes3 = 0
+                currentContinuousWinTimes4 = 0
+                if currentContinuousWinTimes1 > maxContinuousWinTimes1 {
+                    maxContinuousWinTimes1 = currentContinuousWinTimes1
+                }
+            } else if round.winner == game.player2 {
+                currentContinuousWinTimes1 = 0
+                currentContinuousWinTimes2 += 1
+                currentContinuousWinTimes3 = 0
+                currentContinuousWinTimes4 = 0
+                if currentContinuousWinTimes2 > maxContinuousWinTimes2 {
+                    maxContinuousWinTimes2 = currentContinuousWinTimes2
+                }
+            } else if round.winner == game.player3 {
+               currentContinuousWinTimes1 = 0
+               currentContinuousWinTimes2 = 0
+               currentContinuousWinTimes3 += 1
+               currentContinuousWinTimes4 = 0
+               if currentContinuousWinTimes3 > maxContinuousWinTimes3 {
+                   maxContinuousWinTimes3 = currentContinuousWinTimes3
+               }
+           } else if round.winner == game.player4 {
+               currentContinuousWinTimes1 = 0
+               currentContinuousWinTimes2 = 0
+               currentContinuousWinTimes3 = 0
+               currentContinuousWinTimes4 += 1
+               if currentContinuousWinTimes4 > maxContinuousWinTimes4 {
+                   maxContinuousWinTimes4 = currentContinuousWinTimes4
+               }
+           }
+        }
+        playerResultView1.maxContinuousWinTimes = maxContinuousWinTimes1
+        playerResultView2.maxContinuousWinTimes = maxContinuousWinTimes2
+        playerResultView3.maxContinuousWinTimes = maxContinuousWinTimes3
+        playerResultView4.maxContinuousWinTimes = maxContinuousWinTimes4
     }
     
     private func updateBestData() {

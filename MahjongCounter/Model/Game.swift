@@ -19,6 +19,8 @@ class Game: Codable {
     
     var isPlaying: Bool = true
     
+    var rounds: [Round] = []
+    
     init() {
         createDate = Date()
         let settings = Settings.shared;
